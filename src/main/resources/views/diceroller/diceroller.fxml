@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="javafx.scene.layout.BorderPane" minWidth="450" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <HBox alignment="CENTER" minHeight="50.0" minWidth="400.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#rollD4" text="D4" />
+                <Button mnemonicParsing="false" onAction="#rollD6" text="D6" />
+                <Button mnemonicParsing="false" onAction="#rollD8" text="D8" />
+                <Button mnemonicParsing="false" onAction="#rollD10" text="D10" />
+                <Button mnemonicParsing="false" onAction="#rollD16" text="D16" />
+                <Button mnemonicParsing="false" onAction="#rollD20" text="D20" />
+                <Button mnemonicParsing="false" onAction="#rollD100" text="D100" />
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
+    </top>
+    <center>
+        <Label fx:id="resultLabel" alignment="CENTER" snapToPixel="false" text="-" BorderPane.alignment="CENTER">
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+            <font>
+                <Font size="48.0" />
+            </font>
+        </Label>
+    </center>
+    <right>
+        <TextArea fx:id="rollsLog" editable="false" focusTraversable="false" maxWidth="100.0" minWidth="100.0" BorderPane.alignment="CENTER" />
+    </right>
+</fx:root>
