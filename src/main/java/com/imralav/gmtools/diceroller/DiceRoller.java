@@ -22,10 +22,11 @@ public class DiceRoller extends BorderPane {
     private Label resultLabel;
 
     public DiceRoller() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(VIEW_PATH));
+        ClassLoader classLoader = getClass().getClassLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader(classLoader.getResource(VIEW_PATH));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-
+        fxmlLoader.setClassLoader(classLoader);
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
