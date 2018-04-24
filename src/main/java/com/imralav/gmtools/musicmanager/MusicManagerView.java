@@ -2,20 +2,22 @@ package com.imralav.gmtools.musicmanager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class MusicManagerView extends BorderPane implements Initializable {
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+public class MusicManagerView extends BorderPane {
     private static final String VIEW_PATH = "views/musicmanager/musicmanager.fxml";
 
     @FXML
-    private TitledPane favoritesPane;
+    private TextField categoryNameField;
+
+    @FXML
+    private VBox categoriesContainer;
 
     public MusicManagerView() {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -30,8 +32,15 @@ public class MusicManagerView extends BorderPane implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        favoritesPane.setGraphic(new Button("SIemanko"));
+    @FXML
+    public void addCategory() {
+        String categoryName = categoryNameField.getText();
+        if (isEmpty(categoryName)) {
+            return;
+        }
+        CategoryView newCategoryView = new CategoryView();
+        newCategoryView.setText(categoryName);
+        categoriesContainer.getChildren().add(newCategoryView);
+        categoryNameField.setText("");
     }
 }
