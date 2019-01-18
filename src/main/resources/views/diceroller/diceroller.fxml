@@ -37,6 +37,6 @@
         </Label>
     </center>
     <right>
-        <TextArea fx:id="rollsLog" editable="false" focusTraversable="false" maxWidth="100.0" minWidth="100.0" BorderPane.alignment="CENTER" />
+        <TextArea fx:id="rollsLog" editable="false" focusTraversable="false" maxWidth="150.0" minWidth="150.0" BorderPane.alignment="CENTER" />
     </right>
 </fx:root>

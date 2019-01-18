@@ -15,6 +15,10 @@ plugins {
 
     // Apply the groovy plugin to also add support for Groovy (needed for Spock)
     id 'groovy'
+
+    id 'idea'
+
+    id 'net.ltgt.apt' version '0.10'
 }
 
 // Define the main class for the application
@@ -24,6 +28,10 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'com.google.guava:guava:23.0'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
     // Use the latest Groovy version for Spock testing
     testCompile 'org.codehaus.groovy:groovy-all:2.4.13'

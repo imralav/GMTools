@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <fx:root type="TitledPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-    <FlowPane/>
+    <VBox alignment="TOP_CENTER" fx:id="entries" spacing="5">
+        <Button mnemonicParsing="false" text="+" onAction="#addFile"/>
+        <VBox fx:id="audioEntries">
+        </VBox>
+    </VBox>
 </fx:root>
