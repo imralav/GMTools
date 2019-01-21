@@ -26,6 +26,7 @@ public class MusicManagerView extends BorderPane {
     public MusicManagerView() {
         ClassLoader classLoader = getClass().getClassLoader();
         FXMLLoader fxmlLoader = new FXMLLoader(classLoader.getResource(VIEW_PATH));
+        fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.setClassLoader(classLoader);
         try {

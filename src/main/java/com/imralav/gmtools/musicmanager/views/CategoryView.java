@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -22,13 +23,14 @@ public class CategoryView extends TitledPane {
     private FileChooser fileChooser;
 
     @FXML
-    private HBox audioEntries;
+    private VBox audioEntries;
 
     public CategoryView(Category category) {
         this.category = category;
         ClassLoader classLoader = getClass().getClassLoader();
         FXMLLoader fxmlLoader = new FXMLLoader(classLoader.getResource(VIEW_PATH));
         setupFileChooser();
+        fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.setClassLoader(classLoader);
         try {
@@ -41,8 +43,7 @@ public class CategoryView extends TitledPane {
     private void setupFileChooser() {
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter mp3ExtensionFilter = new FileChooser.ExtensionFilter("MP3 files", "*.mp3");
-        FileChooser.ExtensionFilter allExtensionFilter = new FileChooser.ExtensionFilter("All", "*");
-        fileChooser.getExtensionFilters().addAll(mp3ExtensionFilter, allExtensionFilter);
+        fileChooser.getExtensionFilters().add(mp3ExtensionFilter);
     }
 
     @FXML
