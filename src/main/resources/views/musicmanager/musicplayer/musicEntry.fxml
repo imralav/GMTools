@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="musicEntry" stylesheets="@musicEntry.css" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="musicTitle" VBox.vgrow="NEVER">
+      <VBox.margin>
+         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+      </VBox.margin></Label>
+    <ProgressBar fx:id="musicProgress" focusTraversable="false" maxHeight="2.0" maxWidth="1.7976931348623157E308" minHeight="2.0" mouseTransparent="true" prefHeight="2.0" progress="0.0" VBox.vgrow="NEVER" />
+</fx:root>

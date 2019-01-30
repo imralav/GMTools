@@ -1,24 +1,50 @@
 package com.imralav.gmtools.musicmanager.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
-@Getter
 public class Category {
-    private String name;
-    private List<AudioEntry> entries = new LinkedList<>();
+    private StringProperty name;
+    private ObservableList<AudioEntry> musicEntries = FXCollections.observableArrayList();
+    private ObservableList<AudioEntry> soundEntries = FXCollections.observableArrayList();
 
     public Category(String name) {
-        this.name = name;
+        this.name = new SimpleStringProperty(this, "name", name);
     }
 
-    public AudioEntry addEntry(File file) {
+    public StringProperty getNameProperty() {
+        return name;
+    }
+
+    public ObservableList<AudioEntry> getMusicEntriesProperty() {
+        return musicEntries;
+    }
+
+    public ObservableList<AudioEntry> getSoundEntriesProperty() {
+        return soundEntries;
+    }
+
+    public AudioEntry addMusicEntry(File file) {
         AudioEntry entry = new AudioEntry(file);
-        entries.add(entry);
+        musicEntries.add(entry);
         return entry;
+    }
+
+    public AudioEntry addSoundEntry(File file) {
+        AudioEntry entry = new AudioEntry(file);
+        soundEntries.add(entry);
+        return entry;
+    }
+
+    public AudioEntry getNextMusic() {
+        return getNextMusic(false);
+    }
+
+    public AudioEntry getNextMusic(boolean random) {
+        return null;
     }
 }

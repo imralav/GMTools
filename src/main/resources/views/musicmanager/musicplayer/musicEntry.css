@@ -1,0 +1,21 @@
+.musicEntry {
+    -fx-background-color: transparent;
+}
+
+.musicEntry.playing {
+    -fx-background-color: rgb(255,255,255,0.1);
+}
+
+.musicEntry Label {
+    -fx-text-fill: rgb(171, 220, 255);
+    -fx-font-size: 14px;
+}
+
+.musicEntry ProgressBar .track {
+    -fx-background-color: transparent;
+}
+
+.musicEntry ProgressBar .bar {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}

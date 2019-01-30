@@ -1,43 +1,115 @@
 package com.imralav.gmtools.musicmanager.views;
 
+import com.imralav.gmtools.musicmanager.audio.MusicPlayer;
+import com.imralav.gmtools.musicmanager.audio.SoundPlayer;
 import com.imralav.gmtools.musicmanager.model.AudioEntry;
 import com.imralav.gmtools.musicmanager.model.Category;
+import com.imralav.gmtools.utils.ViewsLoader;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class CategoryView extends TitledPane {
-    private static final String VIEW_PATH = "views/musicmanager/category.fxml";
+import static java.util.Objects.isNull;
 
-    private final Category category;
+public class CategoryView extends VBox {
+    private static final String VIEW_PATH = "musicmanager/category.fxml";
+
+    private Category category;
 
     private FileChooser fileChooser;
 
-    @FXML
-    private VBox audioEntries;
+    private MusicPlayer mainMusicPlayer;
 
-    public CategoryView(Category category) {
-        this.category = category;
-        ClassLoader classLoader = getClass().getClassLoader();
-        FXMLLoader fxmlLoader = new FXMLLoader(classLoader.getResource(VIEW_PATH));
-        setupFileChooser();
+    private SoundPlayer soundPlayer;
+
+    @FXML
+    private Label categoryName;
+
+    @FXML
+    private VBox musicEntries;
+
+    @FXML
+    private VBox soundEntries;
+
+    @FXML
+    private MusicPlayerView musicPlayerView;
+
+    CategoryView(Category category) throws IOException {
+        FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        fxmlLoader.setClassLoader(classLoader);
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
+        fxmlLoader.load();
+        setupPlayers();
+        setupFileChooser();
+        setupCategory(category);
+    }
+
+    private void setupPlayers() {
+        soundPlayer = new SoundPlayer();
+        mainMusicPlayer = MusicPlayer.getInstance();
+        musicPlayerView.setPlayNextMusicAction(this::playNextMusic);
+    }
+
+    private void setupCategory(Category category) {
+        this.category = category;
+        categoryName.textProperty().bind(category.getNameProperty());
+        setupSoundEvents();
+        setupMusicEvents();
+    }
+
+    private void setupMusicEvents() {
+        category.getMusicEntriesProperty().addListener((ListChangeListener<AudioEntry>) c -> {
+            while (c.next()) {
+                c.getAddedSubList().forEach(audioEntry -> {
+                    try {
+                        musicEntries.getChildren().add(new MusicEntryView(mainMusicPlayer, audioEntry));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        });
+    }
+
+    private void playNextMusic() {
+        AudioEntry currentMusic = mainMusicPlayer.getCurrentMusic();
+        ObservableList<AudioEntry> musicEntriesProperty = category.getMusicEntriesProperty();
+        int currentMusicIndex = findNextMusicIndex(currentMusic, musicEntriesProperty);
+        mainMusicPlayer.play(musicEntriesProperty.get(currentMusicIndex));
+    }
+
+    private int findNextMusicIndex(AudioEntry currentMusic, ObservableList<AudioEntry> musicEntriesProperty) {
+        int currentMusicIndex = musicEntriesProperty.indexOf(currentMusic);
+        if (musicPlayerView.getRandomCheckbox().isSelected()) {
+            currentMusicIndex = ThreadLocalRandom.current().nextInt(musicEntriesProperty.size());
+        } else if (++currentMusicIndex >= musicEntriesProperty.size()) {
+            currentMusicIndex = 0;
         }
+        return currentMusicIndex;
+    }
+
+    private void setupSoundEvents() {
+        category.getSoundEntriesProperty().addListener((ListChangeListener<AudioEntry>) c -> {
+            while (c.next()) {
+                c.getAddedSubList().forEach(audioEntry -> {
+                    try {
+                        soundEntries.getChildren().add(new SoundEntryView(soundPlayer, audioEntry));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        });
     }
 
     private void setupFileChooser() {
@@ -47,14 +119,24 @@ public class CategoryView extends TitledPane {
     }
 
     @FXML
-    public void addFile() {
+    public void addMusic() {
+        List<File> files = loadFiles();
+        if (files == null) return;
+        files.forEach(category::addMusicEntry);
+    }
+
+    private List<File> loadFiles() {
         List<File> files = fileChooser.showOpenMultipleDialog(this.getScene().getWindow());
-        if (Objects.isNull(files) || files.isEmpty()) {
-            return;
+        if (isNull(files) || files.isEmpty()) {
+            return Collections.emptyList();
         }
-        files.forEach(file -> {
-            AudioEntry entry = category.addEntry(file);
-            audioEntries.getChildren().add(new AudioEntryView(entry));
-        });
+        return files;
+    }
+
+    @FXML
+    public void addSound() {
+        List<File> files = loadFiles();
+        if (files == null) return;
+        files.forEach(category::addSoundEntry);
     }
 }

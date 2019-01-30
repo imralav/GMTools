@@ -1,0 +1,72 @@
+.spinner {
+    -fx-background-color: transparent;
+}
+
+.spinner .text-input {
+    -fx-text-fill: rgb(171, 220, 255);
+    -fx-prompt-text-fill: rgb(113, 148, 173);
+    -fx-background-color: transparent;
+    -fx-border-radius: 3px;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-alignment: center-right;
+}
+
+.spinner .text-input:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+.spinner .text-input:focused {
+    -fx-border-color: rgb(156, 200, 232);
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+.spinner .increment-arrow-button:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+    -fx-background-radius: 3px;
+}
+
+.spinner .increment-arrow-button:pressed {
+    -fx-background-color: rgb(255, 255, 255, 0.05);
+    -fx-border-color: rgb(133, 171, 198);
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: rgb(171, 220, 255);
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+    -fx-background-radius: 3px;
+}
+
+.spinner .decrement-arrow-button:pressed {
+    -fx-background-color: rgb(255, 255, 255, 0.05);
+    -fx-border-color: rgb(133, 171, 198);
+}
+
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: rgb(171, 220, 255);
+}
+
+Label {
+    -fx-text-fill: rgb(171, 220, 255);
+}

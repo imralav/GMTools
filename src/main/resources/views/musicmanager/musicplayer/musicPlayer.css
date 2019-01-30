@@ -1,0 +1,51 @@
+#playPause, #next, #previous {
+    -fx-background-color: transparent;
+}
+
+#playPause:hover, #next:hover, #previous:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+#musicPlayer {
+    -fx-background-color: rgb(71, 93, 110);
+}
+
+#musicPlayer Label, #musicPlayer CheckBox {
+    -fx-text-fill: rgb(171, 220, 255);
+}
+
+#musicPlayer CheckBox .box {
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+#musicPlayer CheckBox:hover .box {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+#musicPlayer CheckBox:selected .box .mark {
+    -fx-background-color: rgb(171, 220, 255);
+}
+
+#musicPlayer Slider .track {
+    -fx-background-color: rgb(140, 185, 218);
+    -fx-pref-height: 5px;
+    -fx-min-height: 3px;
+    -fx-max-height: 5px;
+}
+
+#musicPlayer Slider .thumb {
+    -fx-background-color: rgb(171, 220, 255);
+    -fx-pref-width: 9px;
+    -fx-min-width: 9px;
+    -fx-max-width: 9px;
+    -fx-pref-height: 11px;
+    -fx-min-height: 11px;
+    -fx-max-height: 11px;
+}
+
+#musicTitle {
+    -fx-font-size: 16px;
+}

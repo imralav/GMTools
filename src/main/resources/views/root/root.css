@@ -1,0 +1,83 @@
+ScrollPane {
+    -fx-background-color: rgb(56, 73, 86);
+}
+
+ScrollPane .viewport {
+    -fx-background-color: rgb(56, 73, 86);
+}
+
+TabPane {
+    -fx-background-color: rgb(56, 73, 86);
+}
+
+TabPane .tab-header-background {
+    -fx-background-color: rgb(56, 73, 86);
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-style: solid;
+}
+
+TabPane .tab {
+    -fx-background-color: transparent;
+}
+
+TabPane .tab:selected {
+    -fx-background-color: rgb(255, 255, 255, 0.05);
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-border-radius: 5px 5px 0 0;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+TabPane .tab:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+    -fx-background-radius: 5px 5px 0 0;
+}
+
+TabPane .tab Label {
+    -fx-text-fill: rgb(171, 220, 255);
+}
+
+Button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-text-fill: rgb(171, 220, 255);
+}
+
+Button:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+    -fx-background-radius: 3px;
+}
+
+Button:pressed {
+    -fx-background-color: rgb(255, 255, 255, 0.05);
+    -fx-border-color: rgb(133, 171, 198);
+}
+
+TextField {
+    -fx-text-fill: rgb(171, 220, 255);
+    -fx-prompt-text-fill: rgb(113, 148, 173);
+    -fx-background-color: transparent;
+    -fx-border-radius: 3px;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+TextField:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+TextField:focused {
+    -fx-border-color: rgb(156, 200, 232);
+}
+
+#resultLabel {
+    -fx-text-fill: rgb(171, 220, 255);
+    -fx-font-size: 150px;
+}
