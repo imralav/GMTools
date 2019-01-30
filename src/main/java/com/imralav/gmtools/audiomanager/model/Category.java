@@ -1,4 +1,4 @@
-package com.imralav.gmtools.musicmanager.model;
+package com.imralav.gmtools.audiomanager.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -38,13 +38,5 @@ public class Category {
         AudioEntry entry = new AudioEntry(file);
         soundEntries.add(entry);
         return entry;
-    }
-
-    public AudioEntry getNextMusic() {
-        return getNextMusic(false);
-    }
-
-    public AudioEntry getNextMusic(boolean random) {
-        return null;
     }
 }

@@ -1,6 +1,6 @@
-package com.imralav.gmtools.musicmanager.views;
+package com.imralav.gmtools.audiomanager.views;
 
-import com.imralav.gmtools.musicmanager.audio.MusicPlayer;
+import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -23,11 +23,11 @@ import java.io.IOException;
 import static java.util.Objects.isNull;
 
 public class MusicPlayerView extends GridPane {
-    private static final String VIEW_PATH = "musicmanager/musicplayer/musicplayer.fxml";
+    private static final String VIEW_PATH = "audiomanager/musicplayer/musicplayer.fxml";
 
     private PlayerImagesRepository playerImagesRepository;
 
-    private MusicPlayer musicPlayer;
+    private SingleTrackPlayer musicPlayer;
 
     private Image playIcon;
     private Image pauseIcon;
@@ -73,7 +73,7 @@ public class MusicPlayerView extends GridPane {
     }
 
     private void setupMusicPlayer() {
-        musicPlayer = MusicPlayer.getInstance();
+        musicPlayer = SingleTrackPlayer.getInstance();
         setupButtonIcons();
         setupMusicEvents();
     }

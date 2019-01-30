@@ -1,4 +1,4 @@
-package com.imralav.gmtools.musicmanager.views;
+package com.imralav.gmtools.audiomanager.views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -6,14 +6,14 @@ import javafx.scene.image.Image;
 
 import java.net.URL;
 
-public class PlayerImagesRepository {
+class PlayerImagesRepository {
     private static final PlayerImagesRepository INSTANCE = new PlayerImagesRepository();
-    private static final String VIEW_PATH_ROOT = "views/musicmanager/musicplayer/";
+    private static final String VIEW_PATH_ROOT = "views/audiomanager/musicplayer/";
     private static final int BUTTON_ICON_SIZE = 16;
 
     private ObservableMap<String, Image> images = FXCollections.observableHashMap();
 
-    public static PlayerImagesRepository getInstance() {
+    static PlayerImagesRepository getInstance() {
         return INSTANCE;
     }
 
@@ -21,7 +21,7 @@ public class PlayerImagesRepository {
         //singleton
     }
 
-    public Image getImage(String name) {
+    Image getImage(String name) {
         if(images.containsKey(name)) {
             return images.get(name);
         }

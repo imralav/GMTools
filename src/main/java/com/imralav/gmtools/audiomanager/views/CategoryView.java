@@ -1,9 +1,9 @@
-package com.imralav.gmtools.musicmanager.views;
+package com.imralav.gmtools.audiomanager.views;
 
-import com.imralav.gmtools.musicmanager.audio.MusicPlayer;
-import com.imralav.gmtools.musicmanager.audio.SoundPlayer;
-import com.imralav.gmtools.musicmanager.model.AudioEntry;
-import com.imralav.gmtools.musicmanager.model.Category;
+import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
+import com.imralav.gmtools.audiomanager.players.MultiTrackPlayer;
+import com.imralav.gmtools.audiomanager.model.AudioEntry;
+import com.imralav.gmtools.audiomanager.model.Category;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -22,15 +22,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import static java.util.Objects.isNull;
 
 public class CategoryView extends VBox {
-    private static final String VIEW_PATH = "musicmanager/category.fxml";
+    private static final String VIEW_PATH = "audiomanager/category.fxml";
 
     private Category category;
 
     private FileChooser fileChooser;
 
-    private MusicPlayer mainMusicPlayer;
+    private SingleTrackPlayer musicPlayer;
 
-    private SoundPlayer soundPlayer;
+    private MultiTrackPlayer soundPlayer;
 
     @FXML
     private Label categoryName;
@@ -44,27 +44,45 @@ public class CategoryView extends VBox {
     @FXML
     private MusicPlayerView musicPlayerView;
 
-    CategoryView(Category category) throws IOException {
+    CategoryView(Category category, SingleTrackPlayer mainMusicPlayer) throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
-        setupPlayers();
+        setupPlayers(mainMusicPlayer);
         setupFileChooser();
         setupCategory(category);
     }
 
-    private void setupPlayers() {
-        soundPlayer = new SoundPlayer();
-        mainMusicPlayer = MusicPlayer.getInstance();
-        musicPlayerView.setPlayNextMusicAction(this::playNextMusic);
+    private void setupPlayers(SingleTrackPlayer mainMusicPlayer) {
+        soundPlayer = new MultiTrackPlayer();
+        this.musicPlayer = mainMusicPlayer;
     }
 
     private void setupCategory(Category category) {
         this.category = category;
         categoryName.textProperty().bind(category.getNameProperty());
-        setupSoundEvents();
+        musicPlayerView.setPlayNextMusicAction(this::playNextMusic);
         setupMusicEvents();
+        setupSoundEvents();
+    }
+
+    private void playNextMusic() {
+        AudioEntry currentMusic = musicPlayer.getCurrentMusic();
+        ObservableList<AudioEntry> musicEntriesProperty = category.getMusicEntriesProperty();
+        int nextMusicIndex = findNextMusicIndex(currentMusic, musicEntriesProperty);
+        AudioEntry nextMusic = musicEntriesProperty.get(nextMusicIndex);
+        musicPlayer.play(nextMusic);
+    }
+
+    private int findNextMusicIndex(AudioEntry currentMusic, ObservableList<AudioEntry> musicEntriesProperty) {
+        int currentMusicIndex = musicEntriesProperty.indexOf(currentMusic);
+        if (musicPlayerView.getRandomCheckbox().isSelected()) {
+            return ThreadLocalRandom.current().nextInt(musicEntriesProperty.size());
+        } else if (++currentMusicIndex >= musicEntriesProperty.size()) {
+            return 0;
+        }
+        return currentMusicIndex;
     }
 
     private void setupMusicEvents() {
@@ -72,30 +90,13 @@ public class CategoryView extends VBox {
             while (c.next()) {
                 c.getAddedSubList().forEach(audioEntry -> {
                     try {
-                        musicEntries.getChildren().add(new MusicEntryView(mainMusicPlayer, audioEntry));
+                        musicEntries.getChildren().add(new MusicEntryView(musicPlayer, audioEntry));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
             }
         });
-    }
-
-    private void playNextMusic() {
-        AudioEntry currentMusic = mainMusicPlayer.getCurrentMusic();
-        ObservableList<AudioEntry> musicEntriesProperty = category.getMusicEntriesProperty();
-        int currentMusicIndex = findNextMusicIndex(currentMusic, musicEntriesProperty);
-        mainMusicPlayer.play(musicEntriesProperty.get(currentMusicIndex));
-    }
-
-    private int findNextMusicIndex(AudioEntry currentMusic, ObservableList<AudioEntry> musicEntriesProperty) {
-        int currentMusicIndex = musicEntriesProperty.indexOf(currentMusic);
-        if (musicPlayerView.getRandomCheckbox().isSelected()) {
-            currentMusicIndex = ThreadLocalRandom.current().nextInt(musicEntriesProperty.size());
-        } else if (++currentMusicIndex >= musicEntriesProperty.size()) {
-            currentMusicIndex = 0;
-        }
-        return currentMusicIndex;
     }
 
     private void setupSoundEvents() {

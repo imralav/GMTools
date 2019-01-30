@@ -1,7 +1,7 @@
-package com.imralav.gmtools.musicmanager.views;
+package com.imralav.gmtools.audiomanager.views;
 
-import com.imralav.gmtools.musicmanager.audio.MusicPlayer;
-import com.imralav.gmtools.musicmanager.model.AudioEntry;
+import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
+import com.imralav.gmtools.audiomanager.model.AudioEntry;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ import javafx.scene.media.MediaPlayer;
 import java.io.IOException;
 
 public class MusicEntryView extends VBox {
-    private static final String VIEW_PATH = "musicmanager/musicplayer/musicEntry.fxml";
+    private static final String VIEW_PATH = "audiomanager/musicplayer/musicEntry.fxml";
 
     @FXML
     private Label musicTitle;
@@ -23,7 +23,7 @@ public class MusicEntryView extends VBox {
     @FXML
     private ProgressBar musicProgress;
 
-    public MusicEntryView(MusicPlayer musicPlayer,
+    public MusicEntryView(SingleTrackPlayer musicPlayer,
                           AudioEntry audioEntry) throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);

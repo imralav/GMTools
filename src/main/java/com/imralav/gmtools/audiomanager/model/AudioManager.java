@@ -1,6 +1,5 @@
-package com.imralav.gmtools.musicmanager.audio;
+package com.imralav.gmtools.audiomanager.model;
 
-import com.imralav.gmtools.musicmanager.model.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;

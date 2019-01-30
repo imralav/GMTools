@@ -19,3 +19,8 @@
     -fx-padding: 0;
     -fx-background-insets: 0;
 }
+
+.soundEntry Button {
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
