@@ -39,4 +39,8 @@ public class Category {
         soundEntries.add(entry);
         return entry;
     }
+
+    public String getName() {
+        return name.get();
+    }
 }

@@ -21,6 +21,10 @@ public class AudioEntry {
         return audioFile.get().toURI().toString();
     }
 
+    public String getPath() {
+        return audioFile.get().getAbsolutePath();
+    }
+
     @Override
     public String toString() {
         return "AudioEntry{" + audioFile.get().getAbsolutePath() + '}';

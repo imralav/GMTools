@@ -1,5 +1,6 @@
 package com.imralav.gmtools.audiomanager.views;
 
+import com.imralav.gmtools.audiomanager.persistence.CustomFileChooser;
 import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
 import com.imralav.gmtools.audiomanager.players.MultiTrackPlayer;
 import com.imralav.gmtools.audiomanager.model.AudioEntry;
@@ -26,7 +27,7 @@ public class CategoryView extends VBox {
 
     private Category category;
 
-    private FileChooser fileChooser;
+    private CustomFileChooser fileChooser;
 
     private SingleTrackPlayer musicPlayer;
 
@@ -44,13 +45,13 @@ public class CategoryView extends VBox {
     @FXML
     private MusicPlayerView musicPlayerView;
 
-    CategoryView(Category category, SingleTrackPlayer mainMusicPlayer) throws IOException {
+    CategoryView(Category category, SingleTrackPlayer mainMusicPlayer, CustomFileChooser fileChooser) throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
+        setupFileChooser(fileChooser);
         setupPlayers(mainMusicPlayer);
-        setupFileChooser();
         setupCategory(category);
     }
 
@@ -86,37 +87,41 @@ public class CategoryView extends VBox {
     }
 
     private void setupMusicEvents() {
+        category.getMusicEntriesProperty().forEach(this::addNewMusicEntry);
         category.getMusicEntriesProperty().addListener((ListChangeListener<AudioEntry>) c -> {
             while (c.next()) {
-                c.getAddedSubList().forEach(audioEntry -> {
-                    try {
-                        musicEntries.getChildren().add(new MusicEntryView(musicPlayer, audioEntry));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                c.getAddedSubList().forEach(this::addNewMusicEntry);
             }
         });
+    }
+
+    private void addNewMusicEntry(AudioEntry audioEntry) {
+        try {
+            musicEntries.getChildren().add(new MusicEntryView(musicPlayer, audioEntry));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupSoundEvents() {
+        category.getSoundEntriesProperty().forEach(this::addNewSoundEntry);
         category.getSoundEntriesProperty().addListener((ListChangeListener<AudioEntry>) c -> {
             while (c.next()) {
-                c.getAddedSubList().forEach(audioEntry -> {
-                    try {
-                        soundEntries.getChildren().add(new SoundEntryView(soundPlayer, audioEntry));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                c.getAddedSubList().forEach(this::addNewSoundEntry);
             }
         });
     }
 
-    private void setupFileChooser() {
-        fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter mp3ExtensionFilter = new FileChooser.ExtensionFilter("MP3 files", "*.mp3");
-        fileChooser.getExtensionFilters().add(mp3ExtensionFilter);
+    private void addNewSoundEntry(AudioEntry audioEntry) {
+        try {
+            soundEntries.getChildren().add(new SoundEntryView(soundPlayer, audioEntry));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupFileChooser(CustomFileChooser fileChooser) {
+        this.fileChooser = fileChooser;
     }
 
     @FXML
@@ -127,7 +132,7 @@ public class CategoryView extends VBox {
     }
 
     private List<File> loadFiles() {
-        List<File> files = fileChooser.showOpenMultipleDialog(this.getScene().getWindow());
+        List<File> files = fileChooser.openAudioFiles(this.getScene().getWindow());
         if (isNull(files) || files.isEmpty()) {
             return Collections.emptyList();
         }
