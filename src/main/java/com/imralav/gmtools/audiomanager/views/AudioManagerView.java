@@ -6,6 +6,7 @@ import com.imralav.gmtools.audiomanager.persistence.CategoryFileReader;
 import com.imralav.gmtools.audiomanager.persistence.CategoryFileWriter;
 import com.imralav.gmtools.audiomanager.persistence.CustomFileChooser;
 import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
+import com.imralav.gmtools.audiomanager.players.SingleTrackPlayerManager;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -29,10 +30,8 @@ public class AudioManagerView extends BorderPane {
     @FXML
     private HBox categoriesContainer;
 
-    private SingleTrackPlayer mainMusicPlayer;
-
+    private SingleTrackPlayerManager singleTrackPlayerManager;
     private CustomFileChooser fileChooser;
-
     private CategoryFileWriter categoryFileWriter;
     private CategoryFileReader categoryFileReader;
 
@@ -41,26 +40,41 @@ public class AudioManagerView extends BorderPane {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
-        mainMusicPlayer = SingleTrackPlayer.getInstance();
         fileChooser = new CustomFileChooser();
         categoryFileWriter = new CategoryFileWriter(AudioManager.getInstance());
         categoryFileReader = new CategoryFileReader(AudioManager.getInstance());
+        singleTrackPlayerManager = new SingleTrackPlayerManager();
+        setupCategoriesListener();
+    }
+
+    private void setupCategoriesListener() {
         AudioManager.getInstance().getCategories().addListener((ListChangeListener<? super Category>) change -> {
             while(change.next()) {
                 if(change.wasAdded()) {
-                    change.getAddedSubList().forEach(category -> {
-                        try {
-                            categoriesContainer.getChildren().add(new CategoryView(category, mainMusicPlayer, fileChooser));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                    change.getAddedSubList().forEach(this::addNewCategoryView);
                 }
-                if(change.wasRemoved()) {
-                    categoriesContainer.getChildren().remove(change.getFrom(), change.getTo());
+                if (change.wasRemoved()) {
+                    categoriesContainer.getChildren().removeIf(categoryView -> {
+                        CategoryView view = (CategoryView) categoryView;
+                        return change.getRemoved().contains(view.getCategory());
+                    });
                 }
             }
         });
+    }
+
+    private void addNewCategoryView(Category category) {
+        try {
+            SingleTrackPlayer player = singleTrackPlayerManager.getPlayer(category);
+            CategoryView categoryView = new CategoryView(category, player, fileChooser);
+            categoriesContainer.getChildren().add(categoryView);
+            categoryView.setOnRemoveAction(removedCategory -> {
+                AudioManager.getInstance().removeCategory(removedCategory);
+                player.getCurrentPlayer().stop();
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

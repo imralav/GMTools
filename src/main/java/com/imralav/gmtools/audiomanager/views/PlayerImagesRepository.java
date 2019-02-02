@@ -22,13 +22,18 @@ class PlayerImagesRepository {
     }
 
     Image getImage(String name) {
-        if(images.containsKey(name)) {
-            return images.get(name);
+        return getImage(name, BUTTON_ICON_SIZE);
+    }
+
+    public Image getImage(String name, int iconSize) {
+        String fullImageName = String.format("%s_%d", name, iconSize);
+        if(images.containsKey(fullImageName)) {
+            return images.get(fullImageName);
         }
         ClassLoader classLoader = getClass().getClassLoader();
         URL url = classLoader.getResource(VIEW_PATH_ROOT + name);
-        Image image = new Image(url.toString(), BUTTON_ICON_SIZE, BUTTON_ICON_SIZE, true, true);
-        images.put(name, image);
+        Image image = new Image(url.toString(), iconSize, iconSize, true, true);
+        images.put(fullImageName, image);
         return image;
     }
 }

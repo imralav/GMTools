@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Category {
     private StringProperty name;
@@ -42,5 +43,20 @@ public class Category {
 
     public String getName() {
         return name.get();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(name, category.name) &&
+                Objects.equals(musicEntries, category.musicEntries) &&
+                Objects.equals(soundEntries, category.soundEntries);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, musicEntries, soundEntries);
     }
 }

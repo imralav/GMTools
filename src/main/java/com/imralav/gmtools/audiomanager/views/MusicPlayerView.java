@@ -69,11 +69,10 @@ public class MusicPlayerView extends GridPane {
         fxmlLoader.setController(this);
         fxmlLoader.load();
         playerImagesRepository = PlayerImagesRepository.getInstance();
-        setupMusicPlayer();
     }
 
-    private void setupMusicPlayer() {
-        musicPlayer = SingleTrackPlayer.getInstance();
+    void setupMusicPlayer(SingleTrackPlayer musicPlayer) {
+        this.musicPlayer = musicPlayer;
         setupButtonIcons();
         setupMusicEvents();
     }

@@ -13,18 +13,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class CategoryView extends VBox {
     private static final String VIEW_PATH = "audiomanager/category.fxml";
 
+    @Getter
     private Category category;
 
     private CustomFileChooser fileChooser;
@@ -32,6 +37,9 @@ public class CategoryView extends VBox {
     private SingleTrackPlayer musicPlayer;
 
     private MultiTrackPlayer soundPlayer;
+
+    @Setter
+    private Consumer<Category> onRemoveAction;
 
     @FXML
     private Label categoryName;
@@ -55,9 +63,10 @@ public class CategoryView extends VBox {
         setupCategory(category);
     }
 
-    private void setupPlayers(SingleTrackPlayer mainMusicPlayer) {
+    private void setupPlayers(SingleTrackPlayer musicPlayer) {
         soundPlayer = new MultiTrackPlayer();
-        this.musicPlayer = mainMusicPlayer;
+        this.musicPlayer = musicPlayer;
+        musicPlayerView.setupMusicPlayer(musicPlayer);
     }
 
     private void setupCategory(Category category) {
@@ -144,5 +153,12 @@ public class CategoryView extends VBox {
         List<File> files = loadFiles();
         if (files == null) return;
         files.forEach(category::addSoundEntry);
+    }
+
+    @FXML
+    public void removeCategory() {
+        if(nonNull(onRemoveAction)) {
+            onRemoveAction.accept(category);
+        }
     }
 }

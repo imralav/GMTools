@@ -42,7 +42,7 @@ public class SoundEntryView extends VBox {
         fxmlLoader.setController(this);
         fxmlLoader.load();
         playerImagesRepository = PlayerImagesRepository.getInstance();
-        Image playIcon = playerImagesRepository.getImage("play.png");
+        Image playIcon = playerImagesRepository.getImage("play.png", 10);
         playPauseIcon = new ImageView(playIcon);
         playPause.setGraphic(playPauseIcon);
 
@@ -66,13 +66,6 @@ public class SoundEntryView extends VBox {
             if (addedSound != audioEntry) {
                 return;
             }
-            newPlayer.currentMusicProperty().addListener((observable, oldMusic, newMusic) -> {
-                if (newMusic == audioEntry) {
-                    getStyleClass().add("playing");
-                } else {
-                    getStyleClass().remove("playing");
-                }
-            });
             newPlayer.currentPlayerProperty().addListener(observable -> {
                 if (newPlayer.getCurrentMusic() != audioEntry) {
                     return;
@@ -85,9 +78,11 @@ public class SoundEntryView extends VBox {
                 });
                 currentPlayer.statusProperty().addListener((observable1, oldStatus, newStatus) -> {
                     if (newStatus == MediaPlayer.Status.PLAYING) {
+                        getStyleClass().add("playing");
                         Image pauseIcon = playerImagesRepository.getImage("pause.png");
                         playPauseIcon.setImage(pauseIcon);
                     } else {
+                        getStyleClass().remove("playing");
                         playPauseIcon.setImage(playIcon);
                     }
                 });

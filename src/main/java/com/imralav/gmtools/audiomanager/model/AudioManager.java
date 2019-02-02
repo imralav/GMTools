@@ -22,4 +22,8 @@ public class AudioManager {
         categories.add(category);
         return category;
     }
+
+    public void removeCategory(Category category) {
+        categories.remove(category);
+    }
 }

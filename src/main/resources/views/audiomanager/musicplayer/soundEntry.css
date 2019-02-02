@@ -21,6 +21,8 @@
 }
 
 .soundEntry Button {
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 1px 2px 1px 2px;
+    -fx-border-color: rgb(140, 180, 209);
 }
