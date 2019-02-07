@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -34,6 +35,7 @@ public class AudioManagerView extends BorderPane {
     private CustomFileChooser fileChooser;
     private CategoryFileWriter categoryFileWriter;
     private CategoryFileReader categoryFileReader;
+    private Category currentlyPlayingCategory;
 
     public AudioManagerView() throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
@@ -66,15 +68,25 @@ public class AudioManagerView extends BorderPane {
     private void addNewCategoryView(Category category) {
         try {
             SingleTrackPlayer player = singleTrackPlayerManager.getPlayer(category);
+            player.setOnPlayingAction(replaceCurrentPlayer(category));
             CategoryView categoryView = new CategoryView(category, player, fileChooser);
             categoriesContainer.getChildren().add(categoryView);
             categoryView.setOnRemoveAction(removedCategory -> {
                 AudioManager.getInstance().removeCategory(removedCategory);
-                player.getCurrentPlayer().stop();
+                player.stopCurrentMusic();
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Consumer<SingleTrackPlayer> replaceCurrentPlayer(Category category) {
+        return newPlayer -> {
+            if(nonNull(currentlyPlayingCategory) && currentlyPlayingCategory != category) {
+                singleTrackPlayerManager.getPlayer(currentlyPlayingCategory).pauseWithFadeOut();
+            }
+            currentlyPlayingCategory = category;
+        };
     }
 
     @FXML

@@ -33,7 +33,7 @@ public class MusicEntryView extends VBox {
         musicTitle.setText(audioEntry.getName());
         musicTitle.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getClickCount() == 2) {
-                musicPlayer.play(audioEntry);
+                musicPlayer.playFromStart(audioEntry);
             }
         });
         musicPlayer.currentMusicProperty().addListener((observable, oldMusic, newMusic) -> {

@@ -21,14 +21,14 @@ public class MultiTrackPlayer {
 
     public SingleTrackPlayer play(AudioEntry audioEntry) {
         SingleTrackPlayer currentPlayer = prepareMusicPlayer(audioEntry);
-        currentPlayer.play(audioEntry);
+        currentPlayer.playFromStart(audioEntry);
         return currentPlayer;
     }
 
     private SingleTrackPlayer prepareMusicPlayer(AudioEntry audioEntry) {
         SingleTrackPlayer musicPlayer = soundsMap.get(audioEntry);
         if (isNull(musicPlayer)) {
-            musicPlayer = new SingleTrackPlayer();
+            musicPlayer = new SingleTrackPlayer(null);
             soundsMap.put(audioEntry, musicPlayer);
             musicPlayer.setCurrentMusic(audioEntry);
         }
@@ -37,5 +37,10 @@ public class MultiTrackPlayer {
 
     public ObservableMap<AudioEntry, SingleTrackPlayer> soundsMapProperty() {
         return soundsMap;
+    }
+
+    public void stopAndRemove(AudioEntry soundEntry) {
+        soundsMap.get(soundEntry).getCurrentPlayer().stop();
+        soundsMap.remove(soundEntry);
     }
 }

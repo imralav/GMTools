@@ -22,6 +22,8 @@ public class CategoryConverter {
         List<AudioDto> sounds = category.getSoundEntriesProperty().stream().map(CategoryConverter::convertAudio).collect(Collectors.toList());
         return CategoryDto.builder()
                 .name(category.getName())
+                .randomPlay(category.isRandomPlay())
+                .autoPlay(category.isAutoPlay())
                 .music(music)
                 .sounds(sounds)
                 .build();
@@ -39,6 +41,8 @@ public class CategoryConverter {
 
     public static Category convert(@NonNull CategoryDto dto) {
         Category category = new Category(dto.getName());
+        category.setRandomPlay(dto.isRandomPlay());
+        category.setAutoPlay(dto.isAutoPlay());
         dto.getMusic().forEach(music -> {
             category.addMusicEntry(new File(music.getFilePath()));
         });

@@ -1,5 +1,6 @@
 package com.imralav.gmtools.audiomanager.views;
 
+import com.imralav.gmtools.audiomanager.model.Category;
 import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
@@ -71,7 +72,9 @@ public class MusicPlayerView extends GridPane {
         playerImagesRepository = PlayerImagesRepository.getInstance();
     }
 
-    void setupMusicPlayer(SingleTrackPlayer musicPlayer) {
+    void setupMusicPlayer(SingleTrackPlayer musicPlayer, Category category) {
+        autoplay.selectedProperty().bindBidirectional(category.autoPlayProperty());
+        random.selectedProperty().bindBidirectional(category.randomPlayProperty());
         this.musicPlayer = musicPlayer;
         setupButtonIcons();
         setupMusicEvents();
@@ -101,9 +104,9 @@ public class MusicPlayerView extends GridPane {
         playPause.disableProperty().bind(currentPlayerIsNull);
         playPause.setOnAction(event -> {
             if (musicPlayer.getCurrentPlayer().statusProperty().get() == MediaPlayer.Status.PLAYING) {
-                musicPlayer.getCurrentPlayer().pause();
+                musicPlayer.pauseWithFadeOut();
             } else {
-                musicPlayer.getCurrentPlayer().play();
+                musicPlayer.playWithFadeIn();
             }
         });
         seekSlider.disableProperty().bind(currentPlayerIsNull);

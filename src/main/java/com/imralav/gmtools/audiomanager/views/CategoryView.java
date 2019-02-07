@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,23 +57,23 @@ public class CategoryView extends VBox {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
+        setupCategory(category);
         setupFileChooser(fileChooser);
         setupPlayers(mainMusicPlayer);
-        setupCategory(category);
+        setupMusicEvents();
+        setupSoundEvents();
     }
 
     private void setupPlayers(SingleTrackPlayer musicPlayer) {
         soundPlayer = new MultiTrackPlayer();
         this.musicPlayer = musicPlayer;
-        musicPlayerView.setupMusicPlayer(musicPlayer);
+        musicPlayerView.setupMusicPlayer(musicPlayer, category);
+        musicPlayerView.setPlayNextMusicAction(this::playNextMusic);
     }
 
     private void setupCategory(Category category) {
         this.category = category;
-        categoryName.textProperty().bind(category.getNameProperty());
-        musicPlayerView.setPlayNextMusicAction(this::playNextMusic);
-        setupMusicEvents();
-        setupSoundEvents();
+        categoryName.textProperty().bind(category.nameProperty());
     }
 
     private void playNextMusic() {
@@ -82,7 +81,7 @@ public class CategoryView extends VBox {
         ObservableList<AudioEntry> musicEntriesProperty = category.getMusicEntriesProperty();
         int nextMusicIndex = findNextMusicIndex(currentMusic, musicEntriesProperty);
         AudioEntry nextMusic = musicEntriesProperty.get(nextMusicIndex);
-        musicPlayer.play(nextMusic);
+        musicPlayer.playFromStart(nextMusic);
     }
 
     private int findNextMusicIndex(AudioEntry currentMusic, ObservableList<AudioEntry> musicEntriesProperty) {
@@ -114,16 +113,29 @@ public class CategoryView extends VBox {
 
     private void setupSoundEvents() {
         category.getSoundEntriesProperty().forEach(this::addNewSoundEntry);
-        category.getSoundEntriesProperty().addListener((ListChangeListener<AudioEntry>) c -> {
-            while (c.next()) {
-                c.getAddedSubList().forEach(this::addNewSoundEntry);
+        category.getSoundEntriesProperty().addListener((ListChangeListener<AudioEntry>) change -> {
+            while (change.next()) {
+                if(change.wasAdded()) {
+                    change.getAddedSubList().forEach(this::addNewSoundEntry);
+                }
+                if (change.wasRemoved()) {
+                    soundEntries.getChildren().removeIf(soundEntryView -> {
+                        SoundEntryView view = (SoundEntryView) soundEntryView;
+                        return change.getRemoved().contains(view.getAudioEntry());
+                    });
+                }
             }
         });
     }
 
     private void addNewSoundEntry(AudioEntry audioEntry) {
         try {
-            soundEntries.getChildren().add(new SoundEntryView(soundPlayer, audioEntry));
+            SoundEntryView soundEntryView = new SoundEntryView(soundPlayer, audioEntry);
+            soundEntryView.setOnRemoveAction(soundEntry -> {
+                category.getSoundEntriesProperty().remove(soundEntry);
+                soundPlayer.stopAndRemove(soundEntry);
+            });
+            soundEntries.getChildren().add(soundEntryView);
         } catch (IOException e) {
             e.printStackTrace();
         }

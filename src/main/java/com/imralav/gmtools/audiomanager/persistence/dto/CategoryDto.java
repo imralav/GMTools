@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto implements Serializable {
     private String name;
+    private boolean randomPlay;
+    private boolean autoPlay;
     private List<AudioDto> sounds = new ArrayList<>();
     private List<AudioDto> music = new ArrayList<>();
 }
