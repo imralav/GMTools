@@ -6,6 +6,7 @@ import com.imralav.gmtools.audiomanager.players.MultiTrackPlayer;
 import com.imralav.gmtools.audiomanager.model.AudioEntry;
 import com.imralav.gmtools.audiomanager.model.Category;
 import com.imralav.gmtools.utils.ViewsLoader;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -104,11 +105,13 @@ public class CategoryView extends VBox {
     }
 
     private void addNewMusicEntry(AudioEntry audioEntry) {
-        try {
-            musicEntries.getChildren().add(new MusicEntryView(musicPlayer, audioEntry));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                musicEntries.getChildren().add(new MusicEntryView(musicPlayer, audioEntry));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void setupSoundEvents() {
@@ -119,9 +122,11 @@ public class CategoryView extends VBox {
                     change.getAddedSubList().forEach(this::addNewSoundEntry);
                 }
                 if (change.wasRemoved()) {
-                    soundEntries.getChildren().removeIf(soundEntryView -> {
-                        SoundEntryView view = (SoundEntryView) soundEntryView;
-                        return change.getRemoved().contains(view.getAudioEntry());
+                    Platform.runLater(() -> {
+                        soundEntries.getChildren().removeIf(soundEntryView -> {
+                            SoundEntryView view = (SoundEntryView) soundEntryView;
+                            return change.getRemoved().contains(view.getAudioEntry());
+                        });
                     });
                 }
             }
@@ -129,16 +134,18 @@ public class CategoryView extends VBox {
     }
 
     private void addNewSoundEntry(AudioEntry audioEntry) {
-        try {
-            SoundEntryView soundEntryView = new SoundEntryView(soundPlayer, audioEntry);
-            soundEntryView.setOnRemoveAction(soundEntry -> {
-                category.getSoundEntriesProperty().remove(soundEntry);
-                soundPlayer.stopAndRemove(soundEntry);
-            });
-            soundEntries.getChildren().add(soundEntryView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                SoundEntryView soundEntryView = new SoundEntryView(soundPlayer, audioEntry);
+                soundEntryView.setOnRemoveAction(soundEntry -> {
+                    category.getSoundEntriesProperty().remove(soundEntry);
+                    soundPlayer.stopAndRemove(soundEntry);
+                });
+                soundEntries.getChildren().add(soundEntryView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void setupFileChooser(CustomFileChooser fileChooser) {

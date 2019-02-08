@@ -80,3 +80,11 @@ TextField:focused {
     -fx-text-fill: rgb(171, 220, 255);
     -fx-font-size: 150px;
 }
+
+#curtain {
+    -fx-background-color: rgb(56, 73, 86);
+}
+
+#curtain Label {
+    -fx-text-fill: rgb(171, 220, 255);
+}

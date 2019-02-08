@@ -5,6 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SingleTrackPlayerManager {
@@ -23,5 +24,9 @@ public class SingleTrackPlayerManager {
         SingleTrackPlayer player = new SingleTrackPlayer(this);
         playersForCategories.put(category, player);
         return player;
+    }
+
+    public void remove(List<? extends Category> removed) {
+        removed.forEach(playersForCategories::remove);
     }
 }

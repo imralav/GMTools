@@ -91,7 +91,7 @@ public class SingleTrackPlayer {
         }
         Timeline fadeOut = new Timeline(
                 new KeyFrame(new Duration(0.0), new KeyValue(player.volumeProperty(), player.getVolume())),
-                new KeyFrame(new Duration(2000.0), new KeyValue(player.volumeProperty(), 0., Interpolator.EASE_BOTH))
+                new KeyFrame(new Duration(2000.0), new KeyValue(player.volumeProperty(), 0., Interpolator.EASE_OUT))
         );
         fadeOut.setAutoReverse(false);
         fadeOut.setCycleCount(1);
@@ -121,13 +121,11 @@ public class SingleTrackPlayer {
     private void playWithFadeIn(MediaPlayer player) {
         Timeline fadeOut = new Timeline(
                 new KeyFrame(new Duration(0.0), new KeyValue(player.volumeProperty(), 0.)),
-                new KeyFrame(new Duration(2000.0), new KeyValue(player.volumeProperty(), 1., Interpolator.EASE_BOTH))
+                new KeyFrame(new Duration(2000.0), new KeyValue(player.volumeProperty(), 1., Interpolator.EASE_IN))
         );
         fadeOut.setAutoReverse(false);
         fadeOut.setCycleCount(1);
         fadeOut.playFromStart();
-        fadeOut.setOnFinished(event -> {
-            player.play();
-        });
+        player.play();
     }
 }

@@ -7,7 +7,9 @@ import com.imralav.gmtools.audiomanager.persistence.CategoryFileWriter;
 import com.imralav.gmtools.audiomanager.persistence.CustomFileChooser;
 import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
 import com.imralav.gmtools.audiomanager.players.SingleTrackPlayerManager;
+import com.imralav.gmtools.utils.CurtainManager;
 import com.imralav.gmtools.utils.ViewsLoader;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
@@ -36,6 +39,7 @@ public class AudioManagerView extends BorderPane {
     private CategoryFileWriter categoryFileWriter;
     private CategoryFileReader categoryFileReader;
     private Category currentlyPlayingCategory;
+    private CurtainManager curtainManager;
 
     public AudioManagerView() throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
@@ -46,6 +50,7 @@ public class AudioManagerView extends BorderPane {
         categoryFileWriter = new CategoryFileWriter(AudioManager.getInstance());
         categoryFileReader = new CategoryFileReader(AudioManager.getInstance());
         singleTrackPlayerManager = new SingleTrackPlayerManager();
+        curtainManager = CurtainManager.getInstance();
         setupCategoriesListener();
     }
 
@@ -56,9 +61,12 @@ public class AudioManagerView extends BorderPane {
                     change.getAddedSubList().forEach(this::addNewCategoryView);
                 }
                 if (change.wasRemoved()) {
-                    categoriesContainer.getChildren().removeIf(categoryView -> {
-                        CategoryView view = (CategoryView) categoryView;
-                        return change.getRemoved().contains(view.getCategory());
+                    singleTrackPlayerManager.remove(change.getRemoved());
+                    Platform.runLater(() -> {
+                        categoriesContainer.getChildren().removeIf(categoryView -> {
+                            CategoryView view = (CategoryView) categoryView;
+                            return change.getRemoved().contains(view.getCategory());
+                        });
                     });
                 }
             }
@@ -66,18 +74,20 @@ public class AudioManagerView extends BorderPane {
     }
 
     private void addNewCategoryView(Category category) {
-        try {
-            SingleTrackPlayer player = singleTrackPlayerManager.getPlayer(category);
-            player.setOnPlayingAction(replaceCurrentPlayer(category));
-            CategoryView categoryView = new CategoryView(category, player, fileChooser);
-            categoriesContainer.getChildren().add(categoryView);
-            categoryView.setOnRemoveAction(removedCategory -> {
-                AudioManager.getInstance().removeCategory(removedCategory);
-                player.stopCurrentMusic();
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                SingleTrackPlayer player = singleTrackPlayerManager.getPlayer(category);
+                player.setOnPlayingAction(replaceCurrentPlayer(category));
+                CategoryView categoryView = new CategoryView(category, player, fileChooser);
+                categoriesContainer.getChildren().add(categoryView);
+                categoryView.setOnRemoveAction(removedCategory -> {
+                    AudioManager.getInstance().removeCategory(removedCategory);
+                    player.stopCurrentMusic();
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private Consumer<SingleTrackPlayer> replaceCurrentPlayer(Category category) {
@@ -101,17 +111,44 @@ public class AudioManagerView extends BorderPane {
 
     @FXML
     public void saveCategories() throws IOException {
+        curtainManager.fadeInCurtainFor("Saving categories...");
         File file = fileChooser.openSaveCategoriesDialog(this.getScene().getWindow());
         if (nonNull(file)) {
-            categoryFileWriter.write(file);
+            processCategoryPersisting(file, file1 -> {
+                try {
+                    categoryFileWriter.write(file1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            curtainManager.fadeOutCurrentCurtain();
         }
     }
 
+    private void processCategoryPersisting(File file, Consumer<File> action) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            action.accept(file);
+            Platform.runLater(() -> {
+                curtainManager.fadeOutCurrentCurtain();
+            });
+        });
+    }
+
     @FXML
-    public void openCategories() throws IOException {
+    public void openCategories() {
+        curtainManager.fadeInCurtainFor("Loading categories...");
         File file = fileChooser.openLoadCategoriesDialog(this.getScene().getWindow());
         if (nonNull(file)) {
-            categoryFileReader.read(file);
+            processCategoryPersisting(file, file1 -> {
+                try {
+                    categoryFileReader.read(file1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            curtainManager.fadeOutCurrentCurtain();
         }
     }
 }
