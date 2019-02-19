@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.imralav.gmtools.audiomanager.views.AudioManagerView?>
-<?import com.imralav.gmtools.diceroller.DiceRollerController?>
+<?import com.imralav.gmtools.battletracker.views.BattleTrackerView?>
+<?import com.imralav.gmtools.diceroller.DiceRollerView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-
 <AnchorPane stylesheets="@root.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.imralav.gmtools.RootViewController">
     <TabPane fx:id="contentTabs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Tab text="Dice">
-            <DiceRollerController />
+            <DiceRollerView/>
         </Tab>
         <Tab text="Sounds &amp; Music">
             <AudioManagerView />
         </Tab>
+        <Tab text="Battle tracker">
+            <BattleTrackerView/>
+        </Tab>
     </TabPane>
     <StackPane id="curtain" fx:id="curtain" focusTraversable="true" mouseTransparent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <children>
             <Label fx:id="curtainMessage" alignment="CENTER" blendMode="SRC_ATOP" text="Loading">
                 <font>
                     <Font name="System Bold" size="31.0" />
                 </font>
             </Label>
-        </children>
     </StackPane>
 </AnchorPane>

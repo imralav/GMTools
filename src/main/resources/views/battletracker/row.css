@@ -1,5 +1,4 @@
-
-
 Label {
+    -fx-font-size: 25px;
     -fx-text-fill: rgb(171, 220, 255);
 }

@@ -5,6 +5,7 @@ import javafx.stage.Window;
 import lombok.NonNull;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -25,9 +26,7 @@ public class CustomFileChooser {
         setupAudioExtensions();
         setInitialDirectory();
         List<File> files = fileChooser.showOpenMultipleDialog(ownerWindow);
-        if(isNotEmpty(files)) {
-            setupLastDirectory(files);
-        }
+        setupLastDirectory(files);
         return files;
     }
 
@@ -41,15 +40,26 @@ public class CustomFileChooser {
         fileChooser.getExtensionFilters().setAll(mp3ExtensionFilter);
     }
 
+
+    private void setupLastDirectory(File file) {
+        if (nonNull(file)) {
+            setupLastDirectory(Collections.singletonList(file));
+        }
+    }
+
     private void setupLastDirectory(List<File> files) {
-        File firstFile = files.get(0);
-        lastDirectory = firstFile.getParentFile();
+        if (isNotEmpty(files)) {
+            File firstFile = files.get(0);
+            lastDirectory = firstFile.getParentFile();
+        }
     }
 
     public File openSaveCategoriesDialog(Window window) {
         setupCategorySavingExtension();
         setInitialDirectory();
-        return fileChooser.showSaveDialog(window);
+        File file = fileChooser.showSaveDialog(window);
+        setupLastDirectory(file);
+        return file;
     }
 
     private void setupCategorySavingExtension() {
@@ -59,6 +69,8 @@ public class CustomFileChooser {
     public File openLoadCategoriesDialog(Window window) {
         setupCategorySavingExtension();
         setInitialDirectory();
-        return fileChooser.showOpenDialog(window);
+        File file = fileChooser.showOpenDialog(window);
+        setupLastDirectory(file);
+        return file;
     }
 }

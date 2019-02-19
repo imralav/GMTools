@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root alignment="TOP_CENTER" spacing="10.0" stylesheets="@row.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="initiative" minWidth="-Infinity" prefWidth="50.0">
+      <HBox.margin>
+         <Insets left="10.0" />
+      </HBox.margin></Label>
+    <FlowPane fx:id="units" hgap="5.0" prefWrapLength="1000" rowValignment="TOP" vgap="5.0" HBox.hgrow="ALWAYS" />
+</fx:root>

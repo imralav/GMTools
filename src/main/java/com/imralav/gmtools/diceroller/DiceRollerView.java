@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DiceRollerController extends BorderPane {
+public class DiceRollerView extends BorderPane {
 
     private static final String VIEW_PATH = "diceroller/diceroller.fxml";
 
@@ -37,7 +37,7 @@ public class DiceRollerController extends BorderPane {
     private Spinner<Integer> rollsCounter;
 
 
-    public DiceRollerController() throws IOException {
+    public DiceRollerView() throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
