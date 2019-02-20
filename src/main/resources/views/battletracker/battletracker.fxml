@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.imralav.gmtools.battletracker.views.BuffsTrackerView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -51,6 +52,6 @@
         </VBox>
     </center>
     <right>
-        <VBox fx:id="buffsTracker" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+        <BuffsTrackerView fx:id="buffsTracker" minWidth="200.0" />
     </right>
 </fx:root>

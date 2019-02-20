@@ -36,6 +36,9 @@ public class BattleTrackerView extends BorderPane {
     @FXML
     private VBox trackerEntries;
 
+    @FXML
+    private BuffsTrackerView buffsTracker;
+
     private BattleTracker model;
 
     public BattleTrackerView() throws IOException {
@@ -85,7 +88,8 @@ public class BattleTrackerView extends BorderPane {
 
     private Optional<BattleTrackerRowView> createBattleTrackerRow(BattleTrackerRow battleTrackerRow) {
         try {
-            return Optional.of(new BattleTrackerRowView(battleTrackerRow));
+            BattleTrackerRowView rowView = new BattleTrackerRowView(battleTrackerRow, buffsTracker::setUnit);
+            return Optional.of(rowView);
         } catch (IOException e) {
             e.printStackTrace();
             return Optional.empty();
