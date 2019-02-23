@@ -6,10 +6,7 @@ import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -38,6 +35,9 @@ public class BattleTrackerView extends BorderPane {
 
     @FXML
     private BuffsTrackerView buffsTracker;
+
+    @FXML
+    private Label turn;
 
     private BattleTracker model;
 
@@ -84,11 +84,15 @@ public class BattleTrackerView extends BorderPane {
                 }
             }
         });
+        turn.textProperty().bind(model.turnProperty().asString());
     }
 
     private Optional<BattleTrackerRowView> createBattleTrackerRow(BattleTrackerRow battleTrackerRow) {
         try {
-            BattleTrackerRowView rowView = new BattleTrackerRowView(battleTrackerRow, buffsTracker::setUnit);
+            BattleTrackerRowView rowView = new BattleTrackerRowView(battleTrackerRow, unit -> {
+                buffsTracker.setUnit(unit);
+
+            });
             return Optional.of(rowView);
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,5 +108,15 @@ public class BattleTrackerView extends BorderPane {
     @FXML
     private void sortDescending() {
         model.getEntries().setAll(model.getEntries().sorted(Comparator.reverseOrder()));
+    }
+
+    @FXML
+    private void previousUnit() {
+        model.selectPreviousUnit();
+    }
+
+    @FXML
+    private void nextUnit() {
+        model.selectNextUnit();
     }
 }
