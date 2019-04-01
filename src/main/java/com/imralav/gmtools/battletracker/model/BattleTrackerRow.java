@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,15 +22,20 @@ public class BattleTrackerRow implements Comparable<BattleTrackerRow> {
     private IntegerProperty initiative = new SimpleIntegerProperty(this, "initiative", 0);
     private ObservableList<BattleTrackerUnit> units = FXCollections.observableArrayList();
 
+    @Getter
     private ObjectProperty<BattleTrackerUnit> selectedUnit = new SimpleObjectProperty<>(this, "selectedUnit");
 
-    public BattleTrackerRow(int initiative, @NonNull String name, int units) {
+    public BattleTrackerRow(int initiative, @NonNull String name, int startingHP, int units) {
         this.initiative.set(initiative);
         if(units == 1) {
-            this.units.add(new BattleTrackerUnit(name, MIN_HP));
+            this.units.add(new BattleTrackerUnit(name, startingHP));
         } else if(units > 1) {
-            IntStream.rangeClosed(1, units).forEach(i -> this.units.add(new BattleTrackerUnit(String.format("%s %d", name, i), MIN_HP)));
+            IntStream.rangeClosed(1, units).forEach(i -> this.units.add(new BattleTrackerUnit(String.format("%s %d", name, i), startingHP)));
         }
+    }
+
+    public BattleTrackerRow(int initiative, @NonNull String name, int units) {
+        this(initiative, name, MIN_HP, units);
     }
 
     public List<BattleTrackerUnit> getUnits() {
@@ -51,10 +57,7 @@ public class BattleTrackerRow implements Comparable<BattleTrackerRow> {
 
     @Override
     public String toString() {
-        return "BattleTrackerRow{" +
-                "initiative=" + initiative.getValue() +
-                ", units=" + units.size() +
-                '}';
+        return String.format("BattleTrackerRow{initiative=%d, units=%d}", initiative.getValue(), units.size());
     }
 
     /**
@@ -94,9 +97,5 @@ public class BattleTrackerRow implements Comparable<BattleTrackerRow> {
             }
         }
         return Optional.of(selectedUnit.get());
-    }
-
-    public BattleTrackerUnit getSelectedUnit() {
-        return selectedUnit.getValue();
     }
 }

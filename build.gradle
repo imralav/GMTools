@@ -32,6 +32,10 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+    //logging
+    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.4'

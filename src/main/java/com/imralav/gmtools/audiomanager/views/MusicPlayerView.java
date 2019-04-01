@@ -142,6 +142,16 @@ public class MusicPlayerView extends GridPane {
                 seekAndUpdatePosition(seekTo);
             }
         });
+        seekSlider.setOnMouseReleased(event -> {
+            if(seekSlider.isValueChanging()) {
+                return;
+            }
+            seekSlider.setValueChanging(true);
+            double value = (event.getX()/seekSlider.getWidth())*seekSlider.getMax();
+            seekSlider.setValueChanging(false);
+            Duration seekTo = musicPlayer.getCurrentPlayer().getTotalDuration().multiply(value);
+            seekAndUpdatePosition(seekTo);
+        });
     }
 
     private void seekAndUpdatePosition(Duration seekTo) {

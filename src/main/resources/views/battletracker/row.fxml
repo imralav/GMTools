@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root alignment="TOP_CENTER" spacing="10.0" stylesheets="@row.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_CENTER" spacing="10.0" styleClass="battle-tracker-row" stylesheets="@row.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <Label fx:id="initiative" minWidth="-Infinity" prefWidth="50.0">
       <HBox.margin>
          <Insets left="10.0" />

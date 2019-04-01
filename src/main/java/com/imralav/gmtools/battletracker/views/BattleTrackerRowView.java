@@ -10,8 +10,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class BattleTrackerRowView extends HBox {
@@ -26,21 +30,34 @@ public class BattleTrackerRowView extends HBox {
     @FXML
     private FlowPane units;
 
-    public BattleTrackerRowView(BattleTrackerRow battleTrackerRow, Consumer<BattleTrackerUnit> onUnitClickedAction) throws IOException {
+    private Optional<BiConsumer<BattleTrackerUnit, BattleTrackerUnitView>> onUnitClickedAction;
+
+    BattleTrackerRowView(BattleTrackerRow battleTrackerRow) throws IOException {
+        this(battleTrackerRow, null);
+    }
+
+    BattleTrackerRowView(BattleTrackerRow battleTrackerRow, BiConsumer<BattleTrackerUnit, BattleTrackerUnitView> onUnitClickedAction) throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
         this.battleTrackerRow = battleTrackerRow;
         initiative.textProperty().bind(battleTrackerRow.initiativeProperty().asString());
-        battleTrackerRow.getUnits().stream().forEach(unit -> {
+        setOnUnitClickedAction(onUnitClickedAction);
+        battleTrackerRow.getUnits().forEach(unit -> {
             try {
                 BattleTrackerUnitView unitView = new BattleTrackerUnitView(unit);
-                unitView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> onUnitClickedAction.accept(unit));
+                unitView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    this.onUnitClickedAction.ifPresent(action -> action.accept(unit, unitView));
+                });
                 units.getChildren().add(unitView);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void setOnUnitClickedAction(BiConsumer<BattleTrackerUnit, BattleTrackerUnitView> onUnitClickedAction) {
+        this.onUnitClickedAction = Optional.ofNullable(onUnitClickedAction);
     }
 }

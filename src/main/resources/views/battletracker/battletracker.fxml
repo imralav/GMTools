@@ -34,6 +34,8 @@
                         <Insets right="10.0" />
                     </HBox.margin>
                 </Spinner>
+            <Label text="Starting HP" />
+            <Spinner fx:id="startingHP" editable="true" layoutX="560.0" layoutY="10.0" />
                 <Button fx:id="add" mnemonicParsing="false" text="Add" />
             </children>
          <BorderPane.margin>
