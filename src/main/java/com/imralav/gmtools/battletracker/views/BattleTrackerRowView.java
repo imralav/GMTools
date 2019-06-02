@@ -11,6 +11,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -18,8 +19,9 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+@Slf4j
 public class BattleTrackerRowView extends HBox {
-    private static final String VIEW_PATH = "battletracker/row.fxml";
+    private static final String VIEW_PATH = "battletracker/units/row.fxml";
 
     @Getter
     private final BattleTrackerRow battleTrackerRow;
@@ -31,6 +33,7 @@ public class BattleTrackerRowView extends HBox {
     private FlowPane units;
 
     private Optional<BiConsumer<BattleTrackerUnit, BattleTrackerUnitView>> onUnitClickedAction;
+    private Consumer<BattleTrackerRow> removeRowAction;
 
     BattleTrackerRowView(BattleTrackerRow battleTrackerRow) throws IOException {
         this(battleTrackerRow, null);
@@ -52,12 +55,30 @@ public class BattleTrackerRowView extends HBox {
                 });
                 units.getChildren().add(unitView);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Couldn't create new unit view: {}", e.getMessage(), e);
+            }
+        });
+        battleTrackerRow.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue) {
+                this.getStyleClass().add("selected");
+            } else {
+                this.getStyleClass().remove("selected");
             }
         });
     }
 
     public void setOnUnitClickedAction(BiConsumer<BattleTrackerUnit, BattleTrackerUnitView> onUnitClickedAction) {
         this.onUnitClickedAction = Optional.ofNullable(onUnitClickedAction);
+    }
+
+    public void setRemoveRowAction(Consumer<BattleTrackerRow> removeRowAction) {
+        this.removeRowAction = removeRowAction;
+    }
+
+    @FXML
+    public void removeRow() {
+        if(Objects.nonNull(removeRowAction)) {
+            removeRowAction.accept(battleTrackerRow);
+        }
     }
 }

@@ -21,8 +21,22 @@ plugins {
     id 'net.ltgt.apt' version '0.10'
 }
 
+version = '1.0'
+
 // Define the main class for the application
 mainClassName = 'com.imralav.App'
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'GMTools',
+                'Implementation-Version': version,
+                'Main-Class': 'com.imralav.App'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.

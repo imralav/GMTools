@@ -6,12 +6,17 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class BattleTracker {
@@ -24,16 +29,47 @@ public class BattleTracker {
     @Getter
     private ObjectProperty<BattleTrackerUnit> selectedUnit = new SimpleObjectProperty<>(this, "selectedUnit");
 
+    @Getter
     private IntegerProperty turn = new SimpleIntegerProperty(this, "turn", 0);
+
+    @Setter
+    private Consumer<BattleTrackerRow> firstRowSelectedAction;
+
+    @Setter
+    private Consumer<BattleTrackerUnit> firstUnitSelectedAction;
 
     public BattleTracker() {
         selectedUnit.addListener((observable, oldValue, newValue) -> {
+            if (Objects.nonNull(oldValue)) {
+                oldValue.setSelected(false);
+            }
+            if (Objects.nonNull(newValue)) {
+                newValue.setSelected(true);
+            }
             log.info("Selected unit changed from {} to {}", oldValue, newValue);
+            BattleTrackerRow battleTrackerRow = selectedRow.get();
+            if(battleTrackerRow == entries.get(0)) {
+                List<BattleTrackerUnit> units = battleTrackerRow.getUnits();
+                if(newValue == units.get(0) && Objects.isNull(oldValue)) {
+                    if(Objects.nonNull(firstUnitSelectedAction)) {
+                        firstUnitSelectedAction.accept(newValue);
+                    }
+                }
+            }
         });
         selectedRow.addListener((observable, oldValue, newValue) -> {
             log.info("Selected row changed from {} to {}", oldValue, newValue);
             selectedUnit.unbind();
             selectedUnit.bind(newValue.getSelectedUnit());
+            if (Objects.nonNull(oldValue)) {
+                oldValue.setSelected(false);
+            }
+            newValue.setSelected(true);
+            if(newValue == entries.get(0) && Objects.isNull(oldValue)) {
+                if(Objects.nonNull(firstRowSelectedAction)) {
+                    firstRowSelectedAction.accept(newValue);
+                }
+            }
         });
     }
 
@@ -42,7 +78,22 @@ public class BattleTracker {
     }
 
     public void nextTurn() {
+        if(turn.getValue() > 0) {
+            decrementBuffTurns();
+        }
         turn.set(turn.get() + 1);
+    }
+
+    private void decrementBuffTurns() {
+        entries.stream().flatMap(row -> row.getUnits().stream()).flatMap(unit -> unit.getBuffs().stream()).forEach(Buff::decrementTurn);
+        cleanupOldBuffs();
+    }
+
+    private void cleanupOldBuffs() {
+        entries.stream().flatMap(row -> row.getUnits().stream()).forEach(unit -> {
+            List<Buff> filtered = unit.getBuffs().stream().filter(buff -> buff.getTurnsProperty().getValue() > 0).collect(Collectors.toList());
+            unit.getBuffs().setAll(filtered);
+        });
     }
 
     public void previousTurn() {
@@ -83,5 +134,9 @@ public class BattleTracker {
     public Optional<BattleTrackerUnit> selectNextUnit() {
         log.debug("Starting selection of next unit");
         return selectUnit(0, index -> ++index, BattleTrackerRow::selectNextUnit);
+    }
+
+    public void removeRow(BattleTrackerRow row) {
+        entries.remove(row);
     }
 }

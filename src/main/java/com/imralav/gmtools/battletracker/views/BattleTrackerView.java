@@ -12,20 +12,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MAX_HP;
 import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MIN_HP;
 
+@Slf4j
 public class BattleTrackerView extends BorderPane {
 
     private static final String VIEW_PATH = "battletracker/battletracker.fxml";
-    public static final String SELECTED_CLASS = "selected";
+    private static final String BUFFS_SELECTED_CLASS = "buffs-selected";
 
     @FXML
     private Spinner<Integer> initiative;
@@ -62,6 +65,7 @@ public class BattleTrackerView extends BorderPane {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
+        model.setFirstUnitSelectedAction(unit -> model.nextTurn());
     }
 
     @FXML
@@ -91,15 +95,26 @@ public class BattleTrackerView extends BorderPane {
         turn.textProperty().bind(model.turnProperty().asString());
         selectedUnitView.addListener((observable, oldValue, newValue) -> {
             if (Objects.nonNull(oldValue)) {
-                oldValue.getStyleClass().remove(SELECTED_CLASS);
+                oldValue.getStyleClass().remove(BUFFS_SELECTED_CLASS);
             }
-            newValue.getStyleClass().add(SELECTED_CLASS);
+            newValue.getStyleClass().add(BUFFS_SELECTED_CLASS);
         });
         selectedRowView.addListener((observable, oldValue, newValue) -> {
             if (Objects.nonNull(oldValue)) {
-                oldValue.getStyleClass().remove(SELECTED_CLASS);
+                oldValue.getStyleClass().remove(BUFFS_SELECTED_CLASS);
             }
-            newValue.getStyleClass().add(SELECTED_CLASS);
+            newValue.getStyleClass().add(BUFFS_SELECTED_CLASS);
+        });
+        model.getSelectedUnit().addListener((observable, oldValue, newValue) -> {
+            if (Objects.nonNull(newValue)) {
+                buffsTracker.setUnit(newValue);
+            }
+            if (Objects.nonNull(selectedRowView.getValue())) {
+                selectedRowView.getValue().getStyleClass().remove(BUFFS_SELECTED_CLASS);
+            }
+            if (Objects.nonNull(selectedUnitView.getValue())) {
+                selectedUnitView.getValue().getStyleClass().remove(BUFFS_SELECTED_CLASS);
+            }
         });
     }
 
@@ -132,7 +147,12 @@ public class BattleTrackerView extends BorderPane {
                 selectedRowView.setValue(rowView);
                 selectedUnitView.setValue(unitView);
             };
+            Consumer<BattleTrackerRow> removeRowAction = row -> {
+                model.removeRow(row);
+                buffsTracker.setUnit(null);
+            };
             rowView.setOnUnitClickedAction(onUnitClickedAction);
+            rowView.setRemoveRowAction(removeRowAction);
             return Optional.of(rowView);
         } catch (IOException e) {
             e.printStackTrace();

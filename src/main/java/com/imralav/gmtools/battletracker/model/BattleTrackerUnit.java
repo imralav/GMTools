@@ -1,14 +1,16 @@
 package com.imralav.gmtools.battletracker.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import lombok.ToString;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import lombok.Getter;
 
 public class BattleTrackerUnit {
     private StringProperty name = new SimpleStringProperty(this, "name");
     private IntegerProperty healthPoints = new SimpleIntegerProperty(this, "healthPoints");
+    private BooleanProperty selected = new SimpleBooleanProperty(this, "selected", false);
+    @Getter
+    private ObservableList<Buff> buffs = FXCollections.observableArrayList();
 
     public BattleTrackerUnit(String name, Integer healthPoints) {
         this.name.setValue(name);
@@ -23,8 +25,20 @@ public class BattleTrackerUnit {
         return healthPoints;
     }
 
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
+    }
+
     @Override
     public String toString() {
-        return String.format("BattleTrackerUnit{name=%s, healthPoints=%d}", name.getValue(), healthPoints.getValue());
+        return String.format("BattleTrackerUnit{name=%s, healthPoints=%d, buffs=%s}", name.getValue(), healthPoints.getValue(), buffs);
+    }
+
+    public void addBuff(Buff buff) {
+        buffs.add(buff);
     }
 }

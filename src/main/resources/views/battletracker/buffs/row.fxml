@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root alignment="CENTER_LEFT" snapToPixel="false" spacing="15.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button mnemonicParsing="false" onAction="#removeBuff" text="X" HBox.hgrow="NEVER" />
+      <Label fx:id="turns" minWidth="-Infinity" text="Turns:" HBox.hgrow="NEVER" />
+      <Label fx:id="effect" text="Effect" wrapText="true" HBox.hgrow="ALWAYS" />
+   </children>
+   <padding>
+      <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+   </padding>
+</fx:root>

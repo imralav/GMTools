@@ -6,3 +6,7 @@ Label {
 .battle-tracker-row.selected {
     -fx-background-color: rgb(255,255,255,0.1);
 }
+
+.battle-tracker-row.buffs-selected {
+    -fx-background-color: rgb(255,255,255,0.1);
+}

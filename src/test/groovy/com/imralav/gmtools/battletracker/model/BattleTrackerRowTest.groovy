@@ -1,10 +1,12 @@
 package com.imralav.gmtools.battletracker.model
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import static java.util.Objects.isNull
 import static java.util.Objects.nonNull
 
+@Ignore
 class BattleTrackerRowTest extends Specification {
     def DEFAULT_INITIATIVE = 1
     def DEFAULT_NAME = "name"

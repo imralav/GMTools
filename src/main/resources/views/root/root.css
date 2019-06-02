@@ -6,6 +6,22 @@ ScrollPane .viewport {
     -fx-background-color: rgb(56, 73, 86);
 }
 
+.scroll-bar {
+    -fx-background-color: rgb(171, 220, 255);
+}
+
+.thumb {
+    -fx-background-color: rgb(56, 73, 86);
+}
+
+SplitPane {
+    -fx-background-color: rgb(56, 73, 86);
+}
+
+SplitPane .split-pane-divider {
+    -fx-background-color: rgb(171, 220, 255);
+}
+
 TabPane {
     -fx-background-color: rgb(56, 73, 86);
 }

@@ -1,9 +1,6 @@
 package com.imralav.gmtools.battletracker.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -21,6 +18,7 @@ import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MIN
 public class BattleTrackerRow implements Comparable<BattleTrackerRow> {
     private IntegerProperty initiative = new SimpleIntegerProperty(this, "initiative", 0);
     private ObservableList<BattleTrackerUnit> units = FXCollections.observableArrayList();
+    private BooleanProperty selected = new SimpleBooleanProperty(this, "selected", false);
 
     @Getter
     private ObjectProperty<BattleTrackerUnit> selectedUnit = new SimpleObjectProperty<>(this, "selectedUnit");
@@ -48,6 +46,14 @@ public class BattleTrackerRow implements Comparable<BattleTrackerRow> {
 
     public IntegerProperty initiativeProperty() {
         return initiative;
+    }
+
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
     }
 
     @Override

@@ -16,7 +16,7 @@ import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MAX
 import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MIN_HP;
 
 public class BattleTrackerUnitView extends HBox {
-    private static final String VIEW_PATH = "battletracker/unit.fxml";
+    private static final String VIEW_PATH = "battletracker/units/unit.fxml";
 
     @Getter
     private final BattleTrackerUnit battleTrackerUnit;
@@ -36,5 +36,12 @@ public class BattleTrackerUnitView extends HBox {
         healthPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_HP, MAX_HP));
         healthPoints.getValueFactory().valueProperty().bindBidirectional(battleTrackerUnit.healthPointsProperty().asObject());
         name.textProperty().bindBidirectional(battleTrackerUnit.nameProperty());
+        battleTrackerUnit.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue) {
+                this.getStyleClass().add("selected");
+            } else {
+                this.getStyleClass().remove("selected");
+            }
+        });
     }
 }
