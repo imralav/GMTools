@@ -49,3 +49,7 @@
 .category #categoryName {
     -fx-font-size: 18px;
 }
+
+.dragged {
+    -fx-background-color: rgba(89, 91, 91, 0.42);
+}

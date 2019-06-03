@@ -18,6 +18,7 @@ import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,7 +27,7 @@ import java.util.function.Consumer;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class CategoryView extends VBox {
+public class CategoryView extends VBox  {
     private static final String VIEW_PATH = "audiomanager/category.fxml";
 
     @Getter

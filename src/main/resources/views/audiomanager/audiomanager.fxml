@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@audiomanager.css">
     <top>
         <HBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
             <TextField fx:id="categoryNameField" promptText="Enter category name" />

@@ -26,4 +26,14 @@ public class AudioManager {
     public void removeCategory(Category category) {
         categories.remove(category);
     }
+
+    public void moveCategory(int oldIndex, int newIndex) {
+        Category category = categories.remove(oldIndex);
+        categories.add(newIndex, category);
+    }
+
+    public void moveCategoryAsLast(int oldIndex) {
+        Category category = categories.remove(oldIndex);
+        categories.add(category);
+    }
 }
