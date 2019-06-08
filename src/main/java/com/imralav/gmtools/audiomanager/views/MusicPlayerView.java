@@ -18,11 +18,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
 import static java.util.Objects.isNull;
 
+@Controller
 public class MusicPlayerView extends GridPane {
     private static final String VIEW_PATH = "audiomanager/musicplayer/musicplayer.fxml";
 

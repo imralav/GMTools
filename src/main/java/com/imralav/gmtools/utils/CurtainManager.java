@@ -5,24 +5,20 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import lombok.Setter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 
+@Service
 public class CurtainManager {
-    private static final CurtainManager INSTANCE = new CurtainManager();
     private static final int FADE_DURATION = 1000;
-    public static final double TARGET_OPACITY = 0.8;
+    private static final double TARGET_OPACITY = 0.8;
 
     @Setter
     private Node curtainNode;
 
     @Setter
     private Label curtainMessage;
-
-    private CurtainManager(){}
-
-    public static CurtainManager getInstance() {
-        return INSTANCE;
-    }
 
     public void showCurtainFor(String message) {
         curtainNode.setOpacity(1);

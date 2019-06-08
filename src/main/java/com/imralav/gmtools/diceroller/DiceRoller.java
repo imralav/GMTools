@@ -1,16 +1,19 @@
 package com.imralav.gmtools.diceroller;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+@Service
 public class DiceRoller {
 
     private static final String MULTIPLE_ROLLS_MESSAGE_FORMAT = "(%s) = %d";
     private static final String MULTIPLE_ROLLS_MESSAGE_DELIMITER = " + ";
-    public static final String FULL_RESULT_MESSAGE_FORMAT = "%dk%d = %s";
+    private static final String FULL_RESULT_MESSAGE_FORMAT = "%dk%d = %s";
 
-    public String rollDice(int size, int rollsCount) {
+    String rollDice(int size, int rollsCount) {
         int[] rolls = new int[rollsCount];
         for(int i = 0; i < rollsCount; i++) {
             rolls[i] = roll(size);

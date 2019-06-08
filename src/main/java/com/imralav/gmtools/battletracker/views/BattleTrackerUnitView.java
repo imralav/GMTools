@@ -15,7 +15,7 @@ import java.io.IOException;
 import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MAX_HP;
 import static com.imralav.gmtools.battletracker.model.BattleTrackerConstants.MIN_HP;
 
-public class BattleTrackerUnitView extends HBox {
+class BattleTrackerUnitView extends HBox {
     private static final String VIEW_PATH = "battletracker/units/unit.fxml";
 
     @Getter
@@ -27,7 +27,7 @@ public class BattleTrackerUnitView extends HBox {
     @FXML
     private Spinner<Integer> healthPoints;
 
-    public BattleTrackerUnitView(BattleTrackerUnit battleTrackerUnit) throws IOException {
+    BattleTrackerUnitView(BattleTrackerUnit battleTrackerUnit) throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

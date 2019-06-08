@@ -6,6 +6,15 @@
  * user guide available at https://docs.gradle.org/4.6/userguide/tutorial_java_projects.html
  */
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.0.4.RELEASE"
+    }
+}
+
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
@@ -19,8 +28,12 @@ plugins {
     id 'idea'
 
     id 'net.ltgt.apt' version '0.10'
-}
 
+}
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+sourceCompatibility = 1.8
 version = '1.0'
 
 // Define the main class for the application
@@ -48,8 +61,10 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
     //logging
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
-    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
-    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.2.3'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.2.3'
+
+    compile("org.springframework.boot:spring-boot-starter")
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.4'
@@ -60,7 +75,6 @@ dependencies {
 
     // Use the awesome Spock testing and specification framework even with Java
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-    testCompile 'junit:junit:4.12'
 }
 
 // In this section you declare where to find the dependencies of your project

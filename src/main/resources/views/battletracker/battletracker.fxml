@@ -16,32 +16,30 @@
 <fx:root minWidth="450" stylesheets="@battletracker.css" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <HBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label text="Initiative" />
-                <Spinner fx:id="initiative" editable="true">
-                    <HBox.margin>
-                        <Insets right="10.0" />
-                    </HBox.margin>
-                </Spinner>
-                <Label text="Name" />
-                <TextField fx:id="name">
-                    <HBox.margin>
-                        <Insets right="10.0" />
-                    </HBox.margin>
-                </TextField>
-                <Label text="Units" />
-                <Spinner fx:id="units" editable="true">
-                    <HBox.margin>
-                        <Insets right="10.0" />
-                    </HBox.margin>
-                </Spinner>
-                <Label text="Starting HP" />
-                <Spinner fx:id="startingHP" editable="true" layoutX="560.0" layoutY="10.0" />
-                <Button fx:id="add" mnemonicParsing="false" text="Add" />
-            </children>
             <BorderPane.margin>
-                <Insets bottom="5.0" top="5.0" />
+                <Insets bottom="5.0" top="5.0"/>
             </BorderPane.margin>
+            <Label text="Initiative"/>
+            <Spinner fx:id="initiative" editable="true">
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Spinner>
+            <Label text="Name"/>
+            <TextField fx:id="name">
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </TextField>
+            <Label text="Units"/>
+            <Spinner fx:id="units" editable="true">
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Spinner>
+            <Label text="Starting HP"/>
+            <Spinner fx:id="startingHP" editable="true" layoutX="560.0" layoutY="10.0"/>
+            <Button fx:id="add" mnemonicParsing="false" text="Add"/>
         </HBox>
     </top>
     <center>

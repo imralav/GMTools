@@ -6,14 +6,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 
-import java.net.URL;
-
+@SpringBootApplication
 public class App extends Application {
+
+    private static String[] args;
+
+    private ConfigurableApplicationContext springContext;
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = ViewsLoader.getViewLoader("root/root.fxml");
+        FXMLLoader loader = ViewsLoader.getViewLoader("root/root.fxml", springContext);
         Parent root = loader.load();
 
         stage.setTitle("GMTools");
@@ -26,7 +33,18 @@ public class App extends Application {
         stage.show();
     }
 
+    @Override
+    public void init() {
+        springContext = SpringApplication.run(App.class, App.args);
+    }
+
+    @Override
+    public void stop() {
+        springContext.stop();
+    }
+
     public static void main(String[] args) {
+        App.args = args;
         Application.launch(App.class, args);
     }
 }

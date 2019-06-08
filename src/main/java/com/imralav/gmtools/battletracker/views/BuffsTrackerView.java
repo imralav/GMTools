@@ -16,12 +16,14 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 @Slf4j
+@Controller
 public class BuffsTrackerView extends VBox implements Initializable {
 
     private static final String VIEW_PATH = "battletracker/buffs/buffs.fxml";

@@ -9,21 +9,18 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+@Controller
 public class DiceRollerView extends BorderPane {
 
     private static final String VIEW_PATH = "diceroller/diceroller.fxml";
 
-    private DiceRoller diceRoller = new DiceRoller();
+    private DiceRoller diceRoller;
     private int rollNumber = 1;
     private Font defaultFont;
 
@@ -36,8 +33,9 @@ public class DiceRollerView extends BorderPane {
     @FXML
     private Spinner<Integer> rollsCounter;
 
-
-    public DiceRollerView() throws IOException {
+    @Autowired
+    public DiceRollerView(DiceRoller diceRoller) throws IOException {
+        this.diceRoller = diceRoller;
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

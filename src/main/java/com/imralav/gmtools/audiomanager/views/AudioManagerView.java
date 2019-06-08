@@ -21,6 +21,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +37,7 @@ import static java.util.Objects.*;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Slf4j
+@Controller
 public class AudioManagerView extends BorderPane {
     private static final String VIEW_PATH = "audiomanager/audiomanager.fxml";
     private static final DataFormat CATEGORY_ID_DATAFORMAT = new DataFormat("categoryView");
@@ -51,8 +55,9 @@ public class AudioManagerView extends BorderPane {
     private Category currentlyPlayingCategory;
     private CurtainManager curtainManager;
 
-    public AudioManagerView() throws IOException {
-        FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
+    @Autowired
+    public AudioManagerView(CurtainManager curtainManager, ApplicationContext context) throws IOException {
+        FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH, context);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
@@ -60,7 +65,7 @@ public class AudioManagerView extends BorderPane {
         categoryFileWriter = new CategoryFileWriter(AudioManager.getInstance());
         categoryFileReader = new CategoryFileReader(AudioManager.getInstance());
         singleTrackPlayerManager = new SingleTrackPlayerManager();
-        curtainManager = CurtainManager.getInstance();
+        this.curtainManager = curtainManager;
         setupCategoriesListener();
         setupCategoriesDragAndDrop();
     }

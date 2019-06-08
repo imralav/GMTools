@@ -25,7 +25,7 @@ public class BuffView extends HBox {
     @FXML
     private Label effect;
 
-    public BuffView(Buff buff, Consumer<Buff> removeBuffAction) throws IOException {
+    BuffView(Buff buff, Consumer<Buff> removeBuffAction) throws IOException {
         this.buff = buff;
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH);
         fxmlLoader.setController(this);
