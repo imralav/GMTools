@@ -65,6 +65,7 @@ dependencies {
     compile group: 'ch.qos.logback', name:'logback-core', version: '1.2.3'
 
     compile("org.springframework.boot:spring-boot-starter")
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.4'

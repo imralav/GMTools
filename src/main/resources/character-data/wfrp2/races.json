@@ -1,0 +1,14 @@
+{
+  "halfling": {
+    "displayName": "Halfling"
+  },
+  "dwarf": {
+    "displayName": "Dwarf"
+  },
+  "human": {
+    "displayName": "Human"
+  },
+  "elf": {
+    "displayName": "Elf"
+  }
+}

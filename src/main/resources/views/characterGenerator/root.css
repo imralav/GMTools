@@ -1,0 +1,11 @@
+Label {
+    -fx-text-fill: rgb(171, 220, 255);
+}
+
+Label.section-header {
+    -fx-font-size: 20;
+}
+
+RadioButton {
+    -fx-text-fill: rgb(171, 220, 255);
+}

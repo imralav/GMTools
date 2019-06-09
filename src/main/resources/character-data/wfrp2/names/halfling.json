@@ -1,0 +1,35 @@
+{
+  "simple": {
+    "female": [
+      "Agnes",
+      "Alice"
+    ],
+    "male": [
+      "Adam",
+      "Albert"
+    ]
+  },
+  "complex": {
+    "prefixes": [
+      "Bag",
+      "Balf",
+      "Berc"
+    ],
+    "femaleSuffixes": [
+      "a",
+      "adell",
+      "alot"
+    ],
+    "maleSuffixes": [
+      "belly",
+      "er",
+      "fast"
+    ],
+    "surnames": [
+      "Altannik",
+      "Badylarz",
+      "Beczułka",
+      "Bielinek"
+    ]
+  }
+}

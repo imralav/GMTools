@@ -1,0 +1,29 @@
+{
+  "simple": {
+    "female": [
+      "Astrid",
+      "Berta"
+    ],
+    "male": [
+      "Dimzad",
+      "Durak"
+    ]
+  },
+  "complex": {
+    "prefixes": [
+      "Al",
+      "Ath",
+      "Athran"
+    ],
+    "femaleSuffixes": [
+      "bina",
+      "bora",
+      "dila"
+    ],
+    "maleSuffixes": [
+      "bin",
+      "bor",
+      "dil"
+    ]
+  }
+}

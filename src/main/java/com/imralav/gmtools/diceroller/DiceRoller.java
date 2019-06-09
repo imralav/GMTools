@@ -21,7 +21,7 @@ public class DiceRoller {
         return String.format(FULL_RESULT_MESSAGE_FORMAT, rollsCount, size, prepareResultText(rolls));
     }
 
-    private int roll(int size) {
+    public int roll(int size) {
         return ThreadLocalRandom.current().nextInt(size) + 1;
     }
 

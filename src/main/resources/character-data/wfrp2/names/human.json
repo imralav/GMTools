@@ -1,0 +1,47 @@
+{
+  "simple": {
+    "male": [
+      "Adelbert",
+      "Albrecht",
+      "Berthold",
+      "Dieter",
+      "Eckhardt",
+      "Felix",
+      "Gottfried",
+      "Gustav",
+      "Heinz",
+      "Johann",
+      "Konrad",
+      "Leopold",
+      "Magnus",
+      "Otto",
+      "Pieter",
+      "Rudiger",
+      "Siegfried",
+      "Ulrich",
+      "Waldemar",
+      "Wolfgang"
+    ],
+    "female": [
+      "Alexa",
+      "Alfrida"
+    ]
+  },
+  "complex": {
+    "male": [
+      "Madred",
+      "Oldric",
+      "Uto"
+    ],
+    "female": [
+      "Lisa",
+      "Lucretia"
+    ],
+    "surnames": [
+      "Adelhof",
+      "Eschlimann",
+      "Fehr",
+      "Kalb"
+    ]
+  }
+}
