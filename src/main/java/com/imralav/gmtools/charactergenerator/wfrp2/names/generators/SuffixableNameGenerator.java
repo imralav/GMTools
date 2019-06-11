@@ -19,7 +19,7 @@ public abstract class SuffixableNameGenerator extends SimpleNameGenerator<Suffix
         List<String> suffixes = getSuffixesFor(gender);
         int prefixIndex = Randomizer.getRandomInt(prefixes.size());
         int suffixIndex = Randomizer.getRandomInt(suffixes.size());
-        return prefixes.get(prefixIndex) + suffixes.get(suffixIndex);
+        return buildFinalName(prefixes.get(prefixIndex), suffixes.get(suffixIndex));
     }
 
     private List<String> getSuffixesFor(Gender gender) {
@@ -29,8 +29,7 @@ public abstract class SuffixableNameGenerator extends SimpleNameGenerator<Suffix
         return getLibrary().getFemaleSuffixes();
     }
 
-    @Override
-    public Race getCorrespondingRace() {
-        return Race.DWARF;
+    protected String buildFinalName(String prefix, String suffix) {
+        return prefix + suffix;
     }
 }

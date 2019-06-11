@@ -2,11 +2,71 @@
   "simple": {
     "female": [
       "Alane",
-      "Altronia"
+      "Altronia",
+      "Davandrel",
+      "Eldril",
+      "Eponia",
+      "Fanriel",
+      "Filamir",
+      "Gallina",
+      "Halion",
+      "Iludil",
+      "lonor",
+      "Lindara",
+      "lorandara",
+      "Maruviel",
+      "Pelgrana",
+      "Siluvaine",
+      "Tallana",
+      "Ulliana",
+      "Vivandrel",
+      "Yuviel"
     ],
     "male": [
       "Aluthol",
-      "Amendil"
+      "Arnendil",
+      "Angran",
+      "Cavindcl",
+      "lwen",
+      "Falandar",
+      "Farnoth",
+      "Gildiril",
+      "FLmond",
+      "Imhol",
+      "Larandar",
+      "Laurenor",
+      "Mellion",
+      "Mormacar",
+      "Ravandil",
+      "Torendd",
+      "Urdithane",
+      "Valahuir",
+      "Yavandir"
+    ]
+  },
+  "complex": {
+    "prefixes": [
+      "Aed",
+      "Ael",
+      "Aelf"
+    ],
+    "connectors": [
+      "a",
+      "al",
+      "an"
+    ],
+    "femaleSuffixes": [
+      "a",
+      "aine"
+    ],
+    "maleSuffixes": [
+      "baen",
+      "baine"
+    ],
+    "surnames": [
+      "Białowłosy",
+      "Błękit Pióra",
+      "Lot Sokoła"
     ]
   }
 }

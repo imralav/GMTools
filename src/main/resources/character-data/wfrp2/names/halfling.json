@@ -2,11 +2,47 @@
   "simple": {
     "female": [
       "Agnes",
-      "Alice"
+      "Alice",
+      "Elena",
+      "Eva",
+      "Frida",
+      "Greta",
+      "Hanna",
+      "Heidi",
+      "Hilda",
+      "Janna",
+      "Karin",
+      "Leni",
+      "Marie",
+      "Petra",
+      "Silma",
+      "Sophia",
+      "Susi",
+      "Theda",
+      "Ulla",
+      "Wanda"
     ],
     "male": [
       "Adam",
-      "Albert"
+      "Albert",
+      "Alfred",
+      "Axel",
+      "Carl",
+      "Edgar",
+      "Hugo",
+      "Jakob",
+      "Ludo",
+      "Max",
+      "Niklaus",
+      "Oskar",
+      "Paul",
+      "Ralf",
+      "Rudi",
+      "Theo",
+      "Thomas",
+      "Udo",
+      "Viktor",
+      "Walter"
     ]
   },
   "complex": {

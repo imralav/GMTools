@@ -6,7 +6,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class HumanNameLibrary extends AbstractSimpleNamesLibrary {
+public class HumanNamesLibrary extends AbstractSimpleNamesLibrary {
     private Map<Gender, List<String>> complexNames = new EnumMap<>(Gender.class);
 
     public void setMaleComplexNames(List<String> maleComplexNames) {

@@ -14,10 +14,10 @@ public abstract class SimpleNameGenerator<L extends SimpleNamesLibrary> implemen
 
     @Override
     public String generateSimpleName(Gender gender) {
-        return generateName(gender, getLibrary()::getSimpleNames);
+        return generateGenderSpecificName(gender, getLibrary()::getSimpleNames);
     }
 
-    String generateName(Gender gender, Function<Gender, List<String>> namesRetrievalFunction) {
+    String generateGenderSpecificName(Gender gender, Function<Gender, List<String>> namesRetrievalFunction) {
         List<String> names = namesRetrievalFunction.apply(gender);
         int randomNameIndex = Randomizer.getRandomInt(names.size());
         return names.get(randomNameIndex);

@@ -1,20 +1,19 @@
 package com.imralav.gmtools.charactergenerator.wfrp2.views;
 
-import com.imralav.gmtools.charactergenerator.wfrp2.model.Gender;
 import com.imralav.gmtools.charactergenerator.wfrp2.model.Race;
-import com.imralav.gmtools.charactergenerator.wfrp2.names.generators.NameGenerationType;
-import com.imralav.gmtools.charactergenerator.wfrp2.names.generators.NameGeneratorFacade;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,27 +36,30 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
     private HBox raceSelection;
 
     @FXML
-    private ToggleGroup gender;
-
-    @FXML
-    private ToggleGroup nameGenerationType;
-
-    @FXML
-    private TextField name;
+    private Pane namesGeneratorContainer;
 
     private ToggleGroup raceSelectionToggleGroup;
-
-    private NameGeneratorFacade nameGeneratorFacade;
+    private ObjectProperty<Race> selectedRace;
 
     @Autowired
-    public Wfrp2CharacterGeneratorView(NameGeneratorFacade nameGeneratorFacade) throws IOException {
-        this.nameGeneratorFacade = nameGeneratorFacade;
+    public Wfrp2CharacterGeneratorView(NamesGeneratorView namesGeneratorView) throws IOException {
+        selectedRace = new SimpleObjectProperty<>(this, "selected race");
+        namesGeneratorView.setSelectedRace(selectedRace);
         setupView();
+        injectNamesGeneratorView(namesGeneratorView);
     }
 
-    private void setupRacesRadioButtons(ResourceBundle resources) {
+    private void injectNamesGeneratorView(NamesGeneratorView namesGeneratorView) {
+        namesGeneratorContainer.getChildren().add(namesGeneratorView);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setupRaceSelection(resources);
+    }
+
+    private void setupRaceSelection(ResourceBundle resources) {
         raceSelectionToggleGroup = new ToggleGroup();
-        raceSelectionToggleGroup.setUserData("raceSelection");
         List<RadioButton> radioButtons = Stream.of(Race.values()).map(race -> {
             String raceDisplayName = resources.getString(race.getBundleKey());
             RadioButton radioButton = new RadioButton(raceDisplayName);
@@ -65,6 +67,9 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
             radioButton.setToggleGroup(raceSelectionToggleGroup);
             return radioButton;
         }).collect(Collectors.toList());
+        raceSelectionToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            selectedRace.set((Race) newValue.getUserData());
+        });
         Toggle firstRace = raceSelectionToggleGroup.getToggles().get(0);
         raceSelectionToggleGroup.selectToggle(firstRace);
         Platform.runLater(() -> raceSelection.getChildren().addAll(0, radioButtons));
@@ -83,29 +88,5 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
         int randomizedRaceIndex = ThreadLocalRandom.current().nextInt(races.size());
         Toggle randomizedRace = races.get(randomizedRaceIndex);
         raceSelectionToggleGroup.selectToggle(randomizedRace);
-    }
-
-    @FXML
-    public void randomizeName() {
-        Race selectedRace = (Race) raceSelectionToggleGroup.getSelectedToggle().getUserData();
-        String selectedGenderName = (String) gender.getSelectedToggle().getUserData();
-        Gender selectedGender = Gender.valueOf(selectedGenderName.toUpperCase());
-        String selectedNameGenerationTypeName = (String) nameGenerationType.getSelectedToggle().getUserData();
-        NameGenerationType selectedNameGenerationType = NameGenerationType.valueOf(selectedNameGenerationTypeName.toUpperCase());
-        String generatedName = generateName(selectedRace, selectedGender, selectedNameGenerationType);
-        name.setText(generatedName);
-    }
-
-    private String generateName(Race selectedRace, Gender selectedGender, NameGenerationType selectedNameGenerationType) {
-        if(NameGenerationType.COMPLEX.equals(selectedNameGenerationType)) {
-            return nameGeneratorFacade.generateComplexName(selectedGender, selectedRace);
-        } else {
-            return nameGeneratorFacade.generateSimpleName(selectedGender, selectedRace);
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setupRacesRadioButtons(resources);
     }
 }
