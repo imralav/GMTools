@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root spacing="10" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+    <Label styleClass="section-header" text="%tab.wfrp2.characterGenerator.careers" VBox.vgrow="NEVER" />
+   <TextField fx:id="careersSearch" onAction="#filterCareers" VBox.vgrow="NEVER" />
+   <ScrollPane VBox.vgrow="ALWAYS">
+      <content>
+         <ListView fx:id="careersList" />
+      </content>
+   </ScrollPane>
+</fx:root>

@@ -5,6 +5,7 @@ import com.imralav.gmtools.audiomanager.players.SingleTrackPlayer;
 import com.imralav.gmtools.audiomanager.players.MultiTrackPlayer;
 import com.imralav.gmtools.audiomanager.model.AudioEntry;
 import com.imralav.gmtools.audiomanager.model.Category;
+import com.imralav.gmtools.utils.Randomizer;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +29,7 @@ import java.util.function.Consumer;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+@Slf4j
 public class CategoryView extends VBox  {
     private static final String VIEW_PATH = "audiomanager/category.fxml";
 
@@ -89,7 +92,7 @@ public class CategoryView extends VBox  {
     private int findNextMusicIndex(AudioEntry currentMusic, ObservableList<AudioEntry> musicEntriesProperty) {
         int currentMusicIndex = musicEntriesProperty.indexOf(currentMusic);
         if (musicPlayerView.getRandomCheckbox().isSelected()) {
-            return ThreadLocalRandom.current().nextInt(musicEntriesProperty.size());
+            return Randomizer.getRandomInt(musicEntriesProperty.size());
         } else if (++currentMusicIndex >= musicEntriesProperty.size()) {
             return 0;
         }
@@ -110,7 +113,7 @@ public class CategoryView extends VBox  {
             try {
                 musicEntries.getChildren().add(new MusicEntryView(musicPlayer, audioEntry));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Couldn't add new music entry {}, because: {}", audioEntry.getName(), e.getMessage(), e);
             }
         });
     }
@@ -144,7 +147,7 @@ public class CategoryView extends VBox  {
                 });
                 soundEntries.getChildren().add(soundEntryView);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Couldn't add new sound entry {}, because: {}", audioEntry.getName(), e.getMessage(), e);
             }
         });
     }

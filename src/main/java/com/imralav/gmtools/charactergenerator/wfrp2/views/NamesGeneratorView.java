@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 
 @Controller
 public class NamesGeneratorView extends VBox implements Initializable {
-    private static final String VIEW_PATH = "charactergenerator/names/names.fxml";
+    private static final String VIEW_PATH = "characterGenerator/names/names.fxml";
 
     @FXML
     private ToggleGroup gender;

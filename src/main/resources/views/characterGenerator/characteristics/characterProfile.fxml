@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<fx:root spacing="10" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.121"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane fx:id="mainCharacteristics">
+        <Label text="Main" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="WS" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="BS" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="S" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="T" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="Ag" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="Int" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="WP" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="Fel" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Button text="%randomize" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="0" onAction="#randomizeStartingCharacteristics"/>
+
+        <Label text="Starting" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+
+
+        <Label text="Advance" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+
+
+        <Label text="Current" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+
+        <columnConstraints>
+            <ColumnConstraints minWidth="100.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+        </rowConstraints>
+    </GridPane>
+    <GridPane fx:id="secondaryCharacteristics">
+        <Label text="Secondary" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="A" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="W" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="SB" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="TB" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="M" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="Mag" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="IP" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <Label text="FP" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+
+        <Label text="Starting" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <Label text="0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+
+
+        <Label text="Advance" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+        <Label text="0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+
+
+        <Label text="Current" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+        <Label text="0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+
+        <columnConstraints>
+            <ColumnConstraints minWidth="100.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+            <ColumnConstraints minWidth="50.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+        </rowConstraints>
+    </GridPane>
+</fx:root>

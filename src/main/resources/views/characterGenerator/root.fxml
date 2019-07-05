@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -11,11 +12,15 @@
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
     <Label styleClass="section-header" text="%tab.wfrp2.characterGenerator.race" />
-    <HBox fx:id="raceSelection" alignment="CENTER" minHeight="20.0" spacing="5.0">
-        <Button mnemonicParsing="false" onAction="#randomizeRace" text="%randomize">
-         <HBox.margin>
-            <Insets left="10.0" />
-         </HBox.margin></Button>
-    </HBox>
-    <Pane fx:id="namesGeneratorContainer"></Pane>
+    <FlowPane>
+        <HBox fx:id="raceSelection" alignment="CENTER" minHeight="20.0" spacing="5.0">
+            <Button mnemonicParsing="false" onAction="#randomizeRace" text="%randomize">
+                <HBox.margin>
+                    <Insets left="10.0" />
+                </HBox.margin></Button>
+        </HBox>
+        <Pane fx:id="namesGeneratorContainer"></Pane>
+        <Pane fx:id="characterProfileContainer"></Pane>
+        <Pane fx:id="careersContainer"></Pane>
+    </FlowPane>
 </fx:root>

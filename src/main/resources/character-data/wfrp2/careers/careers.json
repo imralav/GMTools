@@ -1,0 +1,27 @@
+{
+  "acolyte": {
+    "advancementScheme": {
+      "ws": 5,
+      "bs": 5,
+      "s": 0,
+      "t": 5,
+      "ag": 0,
+      "int": 10,
+      "wp": 10,
+      "fel": 10,
+      "a": 0,
+      "w": 2,
+      "sb": 0,
+      "tb": 0,
+      "m": 0,
+      "mag": 0,
+      "ip": 0,
+      "fp": 0
+    },
+    "skills": [],
+    "talents": [],
+    "trappings": [],
+    "entryCareers": [],
+    "exitCareers": ["fanatic", "priest"]
+  }
+}

@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Controller
 public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
-    private static final String VIEW_PATH = "charactergenerator/root.fxml";
+    private static final String VIEW_PATH = "characterGenerator/root.fxml";
 
     @FXML
     private HBox raceSelection;
@@ -38,19 +38,24 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
     @FXML
     private Pane namesGeneratorContainer;
 
+    @FXML
+    private Pane characterProfileContainer;
+
+    @FXML
+    private Pane careersContainer;
+
     private ToggleGroup raceSelectionToggleGroup;
     private ObjectProperty<Race> selectedRace;
 
     @Autowired
-    public Wfrp2CharacterGeneratorView(NamesGeneratorView namesGeneratorView) throws IOException {
+    public Wfrp2CharacterGeneratorView(NamesGeneratorView namesGeneratorView, CharacterProfileView characterProfileView, CareersView careersView) throws IOException {
         selectedRace = new SimpleObjectProperty<>(this, "selected race");
         namesGeneratorView.setSelectedRace(selectedRace);
+        characterProfileView.setSelectedRace(selectedRace);
         setupView();
-        injectNamesGeneratorView(namesGeneratorView);
-    }
-
-    private void injectNamesGeneratorView(NamesGeneratorView namesGeneratorView) {
         namesGeneratorContainer.getChildren().add(namesGeneratorView);
+        characterProfileContainer.getChildren().add(characterProfileView);
+        careersContainer.getChildren().add(careersView);
     }
 
     @Override

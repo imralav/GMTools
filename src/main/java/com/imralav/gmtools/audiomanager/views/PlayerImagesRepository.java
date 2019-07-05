@@ -25,7 +25,7 @@ class PlayerImagesRepository {
         return getImage(name, BUTTON_ICON_SIZE);
     }
 
-    public Image getImage(String name, int iconSize) {
+    Image getImage(String name, int iconSize) {
         String fullImageName = String.format("%s_%d", name, iconSize);
         if(images.containsKey(fullImageName)) {
             return images.get(fullImageName);

@@ -9,7 +9,7 @@ import java.util.Objects;
 public class AudioEntry {
     private final ObservableObjectValue<File> audioFile;
 
-    public AudioEntry(File file) {
+    AudioEntry(File file) {
         audioFile = new SimpleObjectProperty<>(file);
     }
 

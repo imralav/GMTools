@@ -17,7 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +37,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.*;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Slf4j
@@ -41,6 +45,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class AudioManagerView extends BorderPane {
     private static final String VIEW_PATH = "audiomanager/audiomanager.fxml";
     private static final DataFormat CATEGORY_ID_DATAFORMAT = new DataFormat("categoryView");
+    private final AudioManager audioManager;
 
     @FXML
     private TextField categoryNameField;
@@ -56,14 +61,15 @@ public class AudioManagerView extends BorderPane {
     private CurtainManager curtainManager;
 
     @Autowired
-    public AudioManagerView(CurtainManager curtainManager, ApplicationContext context) throws IOException {
+    public AudioManagerView(CurtainManager curtainManager, AudioManager audioManager, ApplicationContext context) throws IOException {
         FXMLLoader fxmlLoader = ViewsLoader.getViewLoader(VIEW_PATH, context);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
         fileChooser = new CustomFileChooser();
-        categoryFileWriter = new CategoryFileWriter(AudioManager.getInstance());
-        categoryFileReader = new CategoryFileReader(AudioManager.getInstance());
+        this.audioManager = audioManager;
+        categoryFileWriter = new CategoryFileWriter(audioManager);
+        categoryFileReader = new CategoryFileReader(audioManager);
         singleTrackPlayerManager = new SingleTrackPlayerManager();
         this.curtainManager = curtainManager;
         setupCategoriesListener();
@@ -103,11 +109,11 @@ public class AudioManagerView extends BorderPane {
         for (int i = 0; i < categories.size(); i++) {
             Bounds boundsInParent = categories.get(i).getBoundsInParent();
             if (event.getX() <= boundsInParent.getMinX() + boundsInParent.getWidth() / 2) {
-                AudioManager.getInstance().moveCategory(categoryId, i);
+                audioManager.moveCategory(categoryId, i);
                 return;
             }
         }
-        AudioManager.getInstance().moveCategoryAsLast(categoryId);
+        audioManager.moveCategoryToTheEnd(categoryId);
     }
 
     private boolean isCorrectCategoryMoveEvent(DragEvent event) {
@@ -116,7 +122,7 @@ public class AudioManagerView extends BorderPane {
     }
 
     private void setupCategoriesListener() {
-        AudioManager.getInstance().getCategories().addListener((ListChangeListener<? super Category>) change -> {
+        audioManager.getCategories().addListener((ListChangeListener<? super Category>) change -> {
             while (change.next()) {
                 if (change.wasAdded()) {
                     List<CategoryView> views = change.getAddedSubList().stream()
@@ -146,7 +152,7 @@ public class AudioManagerView extends BorderPane {
             player.setOnPlayingAction(replaceCurrentPlayer(category));
             CategoryView categoryView = new CategoryView(category, player, fileChooser);
             categoryView.setOnRemoveAction(removedCategory -> {
-                AudioManager.getInstance().removeCategory(removedCategory);
+                audioManager.removeCategory(removedCategory);
                 player.stopCurrentMusic();
             });
             categoryView.setOnDragDetected(event -> {
@@ -187,7 +193,7 @@ public class AudioManagerView extends BorderPane {
         if (isEmpty(categoryName)) {
             return;
         }
-        AudioManager.getInstance().addCategory(categoryName);
+        audioManager.addCategory(categoryName);
         categoryNameField.clear();
     }
 
@@ -196,11 +202,11 @@ public class AudioManagerView extends BorderPane {
         curtainManager.fadeInCurtainFor("Saving categories...");
         File file = fileChooser.openSaveCategoriesDialog(this.getScene().getWindow());
         if (nonNull(file)) {
-            processCategoryPersisting(file, file1 -> {
+            processCategoryPersisting(file, processedFile -> {
                 try {
-                    categoryFileWriter.write(file1);
+                    categoryFileWriter.write(processedFile);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Error occured when writing categories to {}, {}", processedFile.getPath(), e.getMessage(), e);
                 }
             });
         } else {
@@ -222,11 +228,11 @@ public class AudioManagerView extends BorderPane {
         curtainManager.fadeInCurtainFor("Loading categories...");
         File file = fileChooser.openLoadCategoriesDialog(this.getScene().getWindow());
         if (nonNull(file)) {
-            processCategoryPersisting(file, file1 -> {
+            processCategoryPersisting(file, processedFile -> {
                 try {
-                    categoryFileReader.read(file1);
+                    categoryFileReader.read(processedFile);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Error occured when reading categories from {}, {}", processedFile.getPath(), e.getMessage(), e);
                 }
             });
         } else {
