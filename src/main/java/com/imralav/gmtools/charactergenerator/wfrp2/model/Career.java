@@ -11,6 +11,11 @@ public class Career {
     private StringProperty nameProperty = new SimpleStringProperty();
     private ObjectProperty<Characteristics> advancementSchemeProperty = new SimpleObjectProperty<>(new Characteristics());
 
+    public Career(String name, Characteristics advancementScheme) {
+        this.nameProperty.set(name);
+        this.advancementSchemeProperty.set(advancementScheme);
+    }
+
     public String getName() {
         return nameProperty.get();
     }
@@ -25,5 +30,13 @@ public class Career {
 
     public void setAdvancementScheme(Characteristics advancementScheme) {
         advancementSchemeProperty.set(advancementScheme);
+    }
+
+    @Override
+    public String toString() {
+        return "Career{" +
+                "nameProperty=" + nameProperty.get() +
+                ", advancementSchemeProperty=" + advancementSchemeProperty.get() +
+                '}';
     }
 }

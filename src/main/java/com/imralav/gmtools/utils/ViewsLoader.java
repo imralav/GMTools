@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.net.URL;
 import java.util.Objects;

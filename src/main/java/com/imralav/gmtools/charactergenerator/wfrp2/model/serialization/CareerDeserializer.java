@@ -24,8 +24,6 @@ public class CareerDeserializer extends StdDeserializer<Career> {
 
     @Override
     public Career deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        Career career = new Career();
-
         return null;
     }
 }

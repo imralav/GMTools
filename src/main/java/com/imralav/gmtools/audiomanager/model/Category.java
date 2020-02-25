@@ -7,13 +7,11 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.util.Objects;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,6 +16,6 @@ public class CategoryDto implements Serializable {
     private String name;
     private boolean randomPlay;
     private boolean autoPlay;
-    private List<AudioDto> sounds = new ArrayList<>();
-    private List<AudioDto> music = new ArrayList<>();
+    private List<AudioDto> sounds;
+    private List<AudioDto> music;
 }

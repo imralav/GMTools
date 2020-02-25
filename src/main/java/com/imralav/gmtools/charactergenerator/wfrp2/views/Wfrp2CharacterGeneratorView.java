@@ -1,15 +1,16 @@
 package com.imralav.gmtools.charactergenerator.wfrp2.views;
 
 import com.imralav.gmtools.charactergenerator.wfrp2.model.Race;
+import com.imralav.gmtools.charactergenerator.wfrp2.model.WfrpCharacter;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
@@ -39,23 +40,23 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
     private Pane namesGeneratorContainer;
 
     @FXML
-    private Pane characterProfileContainer;
+    private Label selectedRace;
 
     @FXML
-    private Pane careersContainer;
+    private TextField generatedName;
 
     private ToggleGroup raceSelectionToggleGroup;
-    private ObjectProperty<Race> selectedRace;
+    private WfrpCharacter generatedCharacter;
 
     @Autowired
-    public Wfrp2CharacterGeneratorView(NamesGeneratorView namesGeneratorView, CharacterProfileView characterProfileView, CareersView careersView) throws IOException {
-        selectedRace = new SimpleObjectProperty<>(this, "selected race");
-        namesGeneratorView.setSelectedRace(selectedRace);
-        characterProfileView.setSelectedRace(selectedRace);
+    public Wfrp2CharacterGeneratorView(NamesGeneratorView namesGeneratorView) throws IOException {
+        generatedCharacter = new WfrpCharacter();
+        namesGeneratorView.setSelectedRace(generatedCharacter.getRaceProperty());
         setupView();
+        selectedRace.textProperty().bind(generatedCharacter.getRaceProperty().asString());
         namesGeneratorContainer.getChildren().add(namesGeneratorView);
-        characterProfileContainer.getChildren().add(characterProfileView);
-        careersContainer.getChildren().add(careersView);
+        namesGeneratorView.bindGeneratedName(generatedCharacter.getNameProperty());
+        generatedName.textProperty().bind(generatedCharacter.getNameProperty());
     }
 
     @Override
@@ -73,7 +74,7 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
             return radioButton;
         }).collect(Collectors.toList());
         raceSelectionToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            selectedRace.set((Race) newValue.getUserData());
+            generatedCharacter.getRaceProperty().set((Race) newValue.getUserData());
         });
         Toggle firstRace = raceSelectionToggleGroup.getToggles().get(0);
         raceSelectionToggleGroup.selectToggle(firstRace);

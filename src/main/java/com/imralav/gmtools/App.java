@@ -1,4 +1,4 @@
-package com.imralav;
+package com.imralav.gmtools;
 
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Application;
@@ -10,17 +10,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 @SpringBootApplication
 @EnableConfigurationProperties
 public class App extends Application {
 
-    private static final Locale POLISH_LOCALE = new Locale("pl", "PL");
-    private static final ResourceBundle STRINGS_BUNDLE = ResourceBundle.getBundle("bundles/Strings", POLISH_LOCALE);
+    private static final ResourceBundle STRINGS_BUNDLE = ResourceBundle.getBundle("bundles/Strings");
     private static String[] args;
 
     private ConfigurableApplicationContext springContext;
