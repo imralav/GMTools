@@ -8,7 +8,7 @@
 <fx:root alignment="CENTER_LEFT" snapToPixel="false" spacing="15.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button mnemonicParsing="false" onAction="#removeBuff" text="X" HBox.hgrow="NEVER" />
-      <Label fx:id="turns" minWidth="-Infinity" text="Turns:" HBox.hgrow="NEVER" />
+      <Label fx:id="counter" minWidth="-Infinity" HBox.hgrow="NEVER" />
       <Label fx:id="effect" text="Effect" wrapText="true" HBox.hgrow="ALWAYS" />
    </children>
    <padding>

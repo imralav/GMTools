@@ -10,6 +10,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -37,10 +38,13 @@ public class BuffsTrackerView extends VBox implements Initializable {
     private TextField effectDescription;
 
     @FXML
-    private Spinner<Integer> turns;
+    private Spinner<Integer> counter;
 
     @FXML
     private VBox buffsContainer;
+
+    @FXML
+    private CheckBox turnBased;
 
     private ListChangeListener<? super Buff> buffListChangeListener;
 
@@ -114,10 +118,10 @@ public class BuffsTrackerView extends VBox implements Initializable {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        turns.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200));
-        turns.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        counter.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200));
+        counter.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                turns.increment(0); // won't change value, but will commit editor
+                counter.increment(0); // won't change value, but will commit editor
             }
         });
     }
@@ -127,11 +131,21 @@ public class BuffsTrackerView extends VBox implements Initializable {
         if(Objects.isNull(unit.getValue())) {
             return;
         }
-        if(turns.getValue() == 0 || effectDescription.getText().isEmpty()) {
+        if(counter.getValue() == 0 || effectDescription.getText().isEmpty()) {
             return;
         }
-        unit.getValue().addBuff(new Buff(turns.getValue(), effectDescription.getText()));
-        turns.getValueFactory().setValue(0);
+        unit.getValue().addBuff(createCorrectBuff());
+        counter.getValueFactory().setValue(0);
         effectDescription.clear();
+    }
+
+    private Buff createCorrectBuff() {
+        Buff buff = null;
+        if (turnBased.isSelected()) {
+            buff = Buff.turnBased(effectDescription.getText(), counter.getValue());
+        } else {
+            buff = Buff.regular(effectDescription.getText(), counter.getValue());
+        }
+        return buff;
     }
 }

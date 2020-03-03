@@ -20,7 +20,7 @@ public class BuffView extends HBox {
     private final Consumer<Buff> removeBuffAction;
 
     @FXML
-    private Label turns;
+    private Label counter;
 
     @FXML
     private Label effect;
@@ -31,7 +31,11 @@ public class BuffView extends HBox {
         fxmlLoader.setController(this);
         fxmlLoader.setRoot(this);
         fxmlLoader.load();
-        turns.textProperty().bind(Bindings.concat("Turns: ", buff.getTurnsProperty()));
+        String counterName = "Level: ";
+        if (buff.isTurnBased()) {
+            counterName = "Turns: ";
+        }
+        counter.textProperty().bind(Bindings.concat(counterName, buff.getCounterProperty()));
         effect.textProperty().bind(buff.getEffectDescriptionProperty());
         this.removeBuffAction = removeBuffAction;
     }

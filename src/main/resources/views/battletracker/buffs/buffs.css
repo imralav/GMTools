@@ -1,3 +1,22 @@
 #buffsHeader {
     -fx-font-size: 20;
 }
+
+CheckBox#turnBased {
+    -fx-text-fill: rgb(171, 220, 255);
+}
+
+CheckBox#turnBased .box {
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(171, 220, 255);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+CheckBox#turnBased:hover .box {
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+CheckBox#turnBased:selected .box .mark {
+    -fx-background-color: rgb(171, 220, 255);
+}

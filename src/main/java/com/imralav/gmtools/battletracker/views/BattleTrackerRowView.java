@@ -33,6 +33,8 @@ public class BattleTrackerRowView extends HBox {
     private FlowPane units;
 
     private Optional<BiConsumer<BattleTrackerUnit, BattleTrackerUnitView>> onUnitClickedAction;
+
+    @Setter
     private Consumer<BattleTrackerRow> removeRowAction;
 
     BattleTrackerRowView(BattleTrackerRow battleTrackerRow) throws IOException {
@@ -53,17 +55,30 @@ public class BattleTrackerRowView extends HBox {
                 unitView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     this.onUnitClickedAction.ifPresent(action -> action.accept(unit, unitView));
                 });
+                unitView.setRemoveUnitAction(removedUnit -> {
+                    boolean noUnitsInRow = this.battleTrackerRow.removeUnitAndCheckIfEmpty(removedUnit);
+                    if (noUnitsInRow) {
+                        removeRow();
+                    }
+                });
                 units.getChildren().add(unitView);
             } catch (IOException e) {
                 log.error("Couldn't create new unit view: {}", e.getMessage(), e);
             }
         });
         battleTrackerRow.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
+            if (newValue) {
                 this.getStyleClass().add("selected");
             } else {
                 this.getStyleClass().remove("selected");
             }
+        });
+        battleTrackerRow.registerRemovedUnitsListener(removedUnits -> {
+            removedUnits.forEach(removedUnit -> {
+                units.getChildren().removeIf(unitView -> {
+                    return removedUnit == ((BattleTrackerUnitView) unitView).getBattleTrackerUnit();
+                });
+            });
         });
     }
 
@@ -71,13 +86,9 @@ public class BattleTrackerRowView extends HBox {
         this.onUnitClickedAction = Optional.ofNullable(onUnitClickedAction);
     }
 
-    public void setRemoveRowAction(Consumer<BattleTrackerRow> removeRowAction) {
-        this.removeRowAction = removeRowAction;
-    }
-
     @FXML
     public void removeRow() {
-        if(Objects.nonNull(removeRowAction)) {
+        if (Objects.nonNull(removeRowAction)) {
             removeRowAction.accept(battleTrackerRow);
         }
     }

@@ -1,9 +1,17 @@
 .battle-tracker-unit.selected {
-    -fx-background-color: rgb(255,255,255,0.1);
+    -fx-background-color: rgb(255, 255, 255, 0.1);
     -fx-border-style: solid inside;
     -fx-border-width: 1;
     -fx-border-insets: -1;
-    -fx-border-color: rgb(255,255,255,0.2)
+    -fx-border-color: rgb(255, 255, 255, 0.2)
+}
+
+.battle-tracker-unit:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.05);
+    -fx-border-style: solid inside;
+    -fx-border-width: 1;
+    -fx-border-insets: -1;
+    -fx-border-color: rgb(255, 255, 255, 0.1)
 }
 
 .battle-tracker-unit.buffs-selected {
@@ -12,4 +20,44 @@
     -fx-border-width: 2;
     -fx-border-insets: -2;
     -fx-border-color: rgba(255, 214, 207, 0.2)
+}
+
+.battle-tracker-unit Button.remove {
+    visibility: hidden;
+    -fx-pref-width: 15px;
+    -fx-max-width: 15px;
+    -fx-pref-height: 15px;
+    -fx-max-height: 15px;
+    -fx-border-width: 0;
+    -fx-text-fill: rgb(255, 10, 0, 0.5);
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+.battle-tracker-unit:hover Button.remove {
+    visibility: visible;
+}
+
+.battle-tracker-unit Button.remove:hover {
+    -fx-background-color: rgb(255, 0, 0, 0.10);
+    -fx-text-fill: rgb(255, 10, 0, 1);
+}
+
+.battle-tracker-unit Label#hp, .battle-tracker-unit Label#adv, .battle-tracker-unit Spinner {
+    -fx-font-size: 12px;
+}
+
+.battle-tracker-unit Label#name {
+    -fx-font-size: 16px;
+}
+
+.battle-tracker-unit Spinner {
+    -fx-pref-columns: 2;
+}
+
+.battle-tracker-unit HBox#points {
+    -fx-border-style: solid inside;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-insets: -1;
+    -fx-border-color: rgb(171, 220, 255);
 }

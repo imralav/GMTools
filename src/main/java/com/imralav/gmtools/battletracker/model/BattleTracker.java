@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,12 +48,10 @@ public class BattleTracker {
             }
             log.info("Selected unit changed from {} to {}", oldValue, newValue);
             BattleTrackerRow battleTrackerRow = selectedRow.get();
-            if(battleTrackerRow == entries.get(0)) {
+            if (battleTrackerRow == entries.get(0)) {
                 List<BattleTrackerUnit> units = battleTrackerRow.getUnits();
-                if(newValue == units.get(0) && Objects.isNull(oldValue)) {
-                    if(Objects.nonNull(firstUnitSelectedAction)) {
-                        firstUnitSelectedAction.accept(newValue);
-                    }
+                if (newValue == units.get(0) && Objects.isNull(oldValue) && Objects.nonNull(firstUnitSelectedAction)) {
+                    firstUnitSelectedAction.accept(newValue);
                 }
             }
         });
@@ -65,10 +63,8 @@ public class BattleTracker {
                 oldValue.setSelected(false);
             }
             newValue.setSelected(true);
-            if(newValue == entries.get(0) && Objects.isNull(oldValue)) {
-                if(Objects.nonNull(firstRowSelectedAction)) {
-                    firstRowSelectedAction.accept(newValue);
-                }
+            if (newValue == entries.get(0) && Objects.isNull(oldValue) && Objects.nonNull(firstRowSelectedAction)) {
+                firstRowSelectedAction.accept(newValue);
             }
         });
     }
@@ -78,7 +74,7 @@ public class BattleTracker {
     }
 
     public void nextTurn() {
-        if(turn.getValue() > 0) {
+        if (turn.getValue() > 0) {
             decrementBuffTurns();
         }
         turn.set(turn.get() + 1);
@@ -91,7 +87,7 @@ public class BattleTracker {
 
     private void cleanupOldBuffs() {
         entries.stream().flatMap(row -> row.getUnits().stream()).forEach(unit -> {
-            List<Buff> filtered = unit.getBuffs().stream().filter(buff -> buff.getTurnsProperty().getValue() > 0).collect(Collectors.toList());
+            List<Buff> filtered = unit.getBuffs().stream().filter(buff -> buff.getCounterProperty().getValue() > 0).collect(Collectors.toList());
             unit.getBuffs().setAll(filtered);
         });
     }
@@ -105,7 +101,7 @@ public class BattleTracker {
         return selectUnit(entries.size() - 1, index -> --index, BattleTrackerRow::selectPreviousUnit);
     }
 
-    public Optional<BattleTrackerUnit> selectUnit(int initialSelectionIndex, Function<Integer, Integer> newIndexCreator, Function<BattleTrackerRow, Optional<BattleTrackerUnit>> selectionMethod) {
+    public Optional<BattleTrackerUnit> selectUnit(int initialSelectionIndex, IntUnaryOperator newIndexCreator, Function<BattleTrackerRow, Optional<BattleTrackerUnit>> selectionMethod) {
         if (entries.isEmpty()) {
             log.debug("No rows available");
             return Optional.empty();
@@ -121,7 +117,7 @@ public class BattleTracker {
         }
         log.debug("There was no new unit in current row, selecting new row");
         int indexOfSelectedRow = entries.indexOf(selectedRowValue);
-        indexOfSelectedRow = newIndexCreator.apply(indexOfSelectedRow);
+        indexOfSelectedRow = newIndexCreator.applyAsInt(indexOfSelectedRow);
         if (indexOfSelectedRow < 0) {
             indexOfSelectedRow = entries.size() - 1;
         } else if (indexOfSelectedRow >= entries.size()) {

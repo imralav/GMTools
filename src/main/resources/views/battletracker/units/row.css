@@ -4,9 +4,27 @@ Label {
 }
 
 .battle-tracker-row.selected {
-    -fx-background-color: rgb(255,255,255,0.1);
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+.battle-tracker-row:hover {
+    -fx-background-color: rgb(255, 255, 255, 0.05);
 }
 
 .battle-tracker-row.buffs-selected {
-    -fx-background-color: rgb(255,255,255,0.1);
+    -fx-background-color: rgb(255, 255, 255, 0.1);
+}
+
+.battle-tracker-row > Button {
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+    -fx-border-width: 0;
+    -fx-text-fill: rgb(255, 0, 0, 0.5);
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.battle-tracker-row > Button:hover {
+    -fx-background-color: rgb(255, 0, 0, 0.10);
+    -fx-text-fill: rgb(255, 10, 0, 1);
 }
