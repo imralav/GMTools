@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
 <fx:root alignment="TOP_CENTER" spacing="5.0" stylesheets="@root.css" type="VBox"
          xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
@@ -32,6 +33,7 @@
         <Label fx:id="selectedRace" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
         <Pane fx:id="namesGeneratorContainer" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         <TextField fx:id="generatedName" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+        <TextArea fx:id="namesLog" editable="false" focusTraversable="false" maxWidth="200.0" minWidth="150.0"/>
         <columnConstraints>
             <ColumnConstraints/>
             <ColumnConstraints/>
