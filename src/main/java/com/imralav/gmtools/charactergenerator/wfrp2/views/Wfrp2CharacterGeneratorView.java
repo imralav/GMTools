@@ -4,12 +4,15 @@ import com.imralav.gmtools.charactergenerator.wfrp2.model.Race;
 import com.imralav.gmtools.charactergenerator.wfrp2.model.WfrpCharacter;
 import com.imralav.gmtools.utils.ViewsLoader;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -45,6 +49,9 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
     @FXML
     private TextField generatedName;
 
+    @FXML
+    private TextArea namesLog;
+
     private ToggleGroup raceSelectionToggleGroup;
     private WfrpCharacter generatedCharacter;
 
@@ -62,6 +69,7 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupRaceSelection(resources);
+        setupNamesLog();
     }
 
     private void setupRaceSelection(ResourceBundle resources) {
@@ -79,6 +87,14 @@ public class Wfrp2CharacterGeneratorView extends VBox implements Initializable {
         Toggle firstRace = raceSelectionToggleGroup.getToggles().get(0);
         raceSelectionToggleGroup.selectToggle(firstRace);
         Platform.runLater(() -> raceSelection.getChildren().addAll(0, radioButtons));
+    }
+
+    private void setupNamesLog() {
+        generatedCharacter.getNameProperty().addListener((observable, oldValue, newValue) -> {
+            if(Objects.nonNull(oldValue)) {
+                namesLog.insertText(0, oldValue + "\n");
+            }
+        });
     }
 
     private void setupView() throws IOException {
