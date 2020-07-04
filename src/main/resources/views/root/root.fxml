@@ -12,6 +12,8 @@
     <TabPane fx:id="contentTabs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
              minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Tab text="%tab.wfrp2.currencyCalculator" fx:id="currencyCalculatorTab">
+        </Tab>
         <Tab text="%tab.dice" fx:id="diceRollerTab">
         </Tab>
         <Tab text="%tab.musicPlayer" fx:id="audioManagerViewTab">
