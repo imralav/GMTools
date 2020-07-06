@@ -1,13 +1,6 @@
 package com.imralav.gmtools.domain.currency
 
-data class Money(
-        val goldCrowns: GoldCrowns = GoldCrowns(),
-        val silverShillings: SilverShillings = SilverShillings(),
-        val brassPennies: BrassPennies = BrassPennies()
-) {
-    fun toMoneyNotation(): MoneyNotation {
-        return MoneyNotation("$goldCrowns $silverShillings $brassPennies")
-    }
+data class Money(val brassPennies: BrassPennies = BrassPennies()) {
 }
 
 inline class MoneyNotation(val notation: String = "") {
