@@ -1,7 +1,6 @@
 package com.imralav.gmtools.gui.utils;
 
 import javafx.fxml.FXMLLoader;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -14,8 +13,6 @@ import java.util.ResourceBundle;
 public class ViewsLoader {
     private static final String VIEW_PATH = "/views/";
 
-    @Getter
-    private static ViewsLoader instance = new ViewsLoader();
     @Setter
     private static ResourceBundle strings;
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<fx:root stylesheets="@calculator.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/10.0.2-internal"
+         xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" minHeight="50.0" minWidth="400.0" spacing="10.0">
+    <TextArea fx:id="calculationsLog" prefColumnCount="50" prefRowCount="5" onMouseClicked="#handleLogLineClicked"/>
+    <TextField fx:id="computationInput" promptText="np. 10ZK * 0.9 + 2s" onAction="#handleInputEntered"/>
+</fx:root>

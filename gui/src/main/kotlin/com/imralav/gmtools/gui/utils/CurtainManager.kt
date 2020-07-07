@@ -13,12 +13,12 @@ class CurtainManager {
 
     lateinit var curtainMessage: Label
 
-    fun showCurtainFor(message: String?) {
+    fun showCurtainFor(message: String) {
         curtainNode.opacity = 1.0
         curtainMessage.text = message
     }
 
-    fun fadeInCurtainFor(message: String?) {
+    fun fadeInCurtainFor(message: String) {
         curtainMessage.text = message
         val ft = FadeTransition(Duration.millis(FADE_DURATION.toDouble()), curtainNode)
         ft.fromValue = 0.0

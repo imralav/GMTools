@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<fx:root stylesheets="@coinConverter.css" type="HBox" xmlns="http://javafx.com/javafx/10.0.2-internal"
+         xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" minHeight="50.0" minWidth="400.0" spacing="10.0"
+         BorderPane.alignment="CENTER">
+    <BorderPane.margin>
+        <Insets/>
+    </BorderPane.margin>
+    <TextField fx:id="goldCrownsTextField" onKeyReleased="#updateFromGold" prefColumnCount="4"
+               promptText="0" HBox.hgrow="NEVER"/>
+    <Label text="%tab.wfrp2.currencyCalculator.gc.abbr"/>
+    <Label text="="/>
+    <TextField fx:id="silverShillingsTextField" onKeyReleased="#updateFromSilver" prefColumnCount="5"
+               promptText="0"/>
+    <Label text="%tab.wfrp2.currencyCalculator.ss.abbr"/>
+    <Label text="="/>
+    <TextField fx:id="brassPenniesTextField" onKeyReleased="#updateFromBrass" prefColumnCount="6"
+               promptText="0"/>
+    <Label text="%tab.wfrp2.currencyCalculator.bp.abbr"/>
+</fx:root>

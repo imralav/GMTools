@@ -188,7 +188,7 @@ public class AudioManagerView extends BorderPane {
     }
 
     @FXML
-    public void addCategory() throws IOException {
+    public void addCategory() {
         String categoryName = categoryNameField.getText();
         if (isEmpty(categoryName)) {
             return;
@@ -198,7 +198,7 @@ public class AudioManagerView extends BorderPane {
     }
 
     @FXML
-    public void saveCategories() throws IOException {
+    public void saveCategories() {
         curtainManager.fadeInCurtainFor("Saving categories...");
         File file = fileChooser.openSaveCategoriesDialog(this.getScene().getWindow());
         if (nonNull(file)) {

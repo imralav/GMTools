@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 version = "1.0"
 
 plugins {
@@ -6,6 +8,7 @@ plugins {
     groovy
     idea
     id("org.jetbrains.kotlin.jvm")
+//    id("org.jetbrains.kotlin.kapt")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     id("net.ltgt.apt")
@@ -23,6 +26,7 @@ application {
     mainClassName = "com.imralav.gmtools.gui.App"
 }
 
+val arrow_version = "0.10.4"
 dependencies {
     implementation(project(":domain"))
 
@@ -47,6 +51,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.72")
+    implementation("io.arrow-kt:arrow-core:$arrow_version")
+    implementation("io.arrow-kt:arrow-syntax:$arrow_version")
+//    kapt("io.arrow-kt:arrow-meta:$arrow_version")
 }
 
 tasks.compileKotlin {
