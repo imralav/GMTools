@@ -1,53 +1,124 @@
 package com.imralav.gmtools.domain.currency
 
-interface Coin {
-    val value: Int
-    fun toGoldCrowns(): GoldCrowns
-    fun toSilverShillings(): SilverShillings
-    fun toBrassPennies(): BrassPennies
+import com.imralav.gmtools.domain.currency.Coin.BP
+import com.imralav.gmtools.domain.currency.Coin.SS
+import com.imralav.gmtools.domain.currency.Coin.ZK
+
+enum class Coin(val abbreviation: String) {
+    ZK("ZK") {
+        override fun toGoldCrowns(): Coins = Coins(crowns = 1)
+        override fun toSilverShillings(): Coins = Coins(shillings = 20)
+        override fun toBrassPennies(): Coins = Coins(pennies = 240)
+    },
+    SS("s") {
+        override fun toGoldCrowns(): Coins = Coins()
+        override fun toSilverShillings(): Coins = Coins(shillings = 1)
+        override fun toBrassPennies(): Coins = Coins(pennies = 12)
+    },
+    BP("p") {
+        override fun toGoldCrowns(): Coins = Coins()
+        override fun toSilverShillings(): Coins = Coins()
+        override fun toBrassPennies(): Coins = Coins(pennies = 1)
+    };
+
+    abstract fun toGoldCrowns(): Coins
+    abstract fun toSilverShillings(): Coins
+    abstract fun toBrassPennies(): Coins
 
     companion object {
-        fun fromCoinType(coins: Int, coinType: String): Coin {
-            return when (coinType) {
-                "ZK" -> GoldCrowns(coins)
-                "s" -> SilverShillings(coins)
-                "p" -> BrassPennies(coins)
-                else -> BrassPennies()
-            }
-        }
+        fun fromAbbreviation(abbreviation: String): Coin = values().find { it.abbreviation == abbreviation } ?: BP
     }
 }
 
-inline class GoldCrowns(override val value: Int = 0) : Coin {
-    override fun toGoldCrowns(): GoldCrowns = GoldCrowns(value)
+data class Coins(val pennies: Int = 0, val shillings: Int = 0, val crowns: Int = 0) {
+    init {
+        require(pennies >= 0)
+        require(shillings >= 0)
+        require(crowns >= 0)
+    }
 
-    override fun toSilverShillings(): SilverShillings = SilverShillings(value * 20)
+    fun normalize(): Coins {
+        val newPennies = pennies % 12
+        val tempShillings = shillings + pennies / 12
+        val newShillings = tempShillings % 20
+        val newCrowns = crowns + tempShillings / 20
+        return Coins(
+                pennies = newPennies,
+                shillings = newShillings,
+                crowns = newCrowns
+        )
+    }
 
-    override fun toBrassPennies(): BrassPennies = BrassPennies(value * 240)
+    override fun toString(): String {
+        return "${crowns}${ZK.abbreviation} ${shillings}${SS.abbreviation} ${pennies}${BP.abbreviation}"
+    }
 
-    override fun toString(): String = "${value}ZK"
+    fun toShortenedString(): String {
+        val coins = mutableListOf<String>()
+        if (crowns > 0) coins.add("${crowns}${ZK.abbreviation}")
+        if (shillings > 0) coins.add("${shillings}${SS.abbreviation}")
+        if (pennies > 0) coins.add("${pennies}${BP.abbreviation}")
+        if (coins.isEmpty()) return "0${BP.abbreviation}"
+        else return coins.joinToString(" ")
+    }
+
+    operator fun plus(other: Coins): Coins = Coins(
+            pennies = this.pennies + other.pennies,
+            shillings = this.shillings + other.shillings,
+            crowns = this.crowns + other.crowns
+    ).normalize()
+
+    operator fun minus(other: Coins): Coins {
+        val differenceInBrassPennies = this.asBrassPennies() - other.asBrassPennies()
+        return if (differenceInBrassPennies < 0) {
+            Coins()
+        } else {
+            Coins(pennies = differenceInBrassPennies).normalize()
+        }
+    }
+
+    operator fun times(multiplier: Double): Coins =
+            Coins(pennies = (this.asBrassPennies() * multiplier).toInt()).normalize()
+
+    operator fun Double.times(coins: Coins): Coins =
+            Coins(pennies = (coins.asBrassPennies() * this).toInt()).normalize()
+
+    operator fun div(divisor: Double): Coins {
+        return if (divisor == 0.0) {
+            Coins()
+        } else {
+            Coins(pennies = (this.asBrassPennies() / divisor).toInt()).normalize()
+        }
+    }
+
+    fun asGoldCrowns(): Int = crowns + shillings / 20 + pennies / 240
+    fun asSilverShillings(): Int = crowns * 20 + shillings + pennies / 12
+    fun asBrassPennies(): Int = crowns * 240 + shillings * 12 + pennies
 }
 
-inline class SilverShillings(override val value: Int = 0) : Coin {
-    override fun toGoldCrowns(): GoldCrowns = GoldCrowns(value / 20)
-
-    override fun toSilverShillings(): SilverShillings = SilverShillings(value)
-
-    override fun toBrassPennies(): BrassPennies = BrassPennies(value * 12)
-
-    override fun toString(): String = "${value}s"
+fun Int.toGoldCrowns(): Coins = Coins(crowns = this)
+fun Int.toSilverShillings(): Coins = Coins(shillings = this)
+fun Int.toBrassPennies(): Coins = Coins(pennies = this)
+operator fun Int.times(coin: Coin): Coins {
+    return when (coin) {
+        ZK -> Coins(crowns = this)
+        SS -> Coins(shillings = this)
+        BP -> Coins(pennies = this)
+    }
 }
 
-inline class BrassPennies(override val value: Int = 0) : Coin {
-    override fun toGoldCrowns(): GoldCrowns = GoldCrowns(value / 240)
+operator fun Coin.times(factor: Int): Coins = factor * this
 
-    override fun toSilverShillings(): SilverShillings = SilverShillings(value / 12)
+val singleCoinTypeWithValueRegex: Regex
+    get() = Regex("""(\d+)(ZK|s|p)""")
 
-    override fun toBrassPennies(): BrassPennies = BrassPennies(value)
-
-    override fun toString(): String = "${value}p"
+fun String.toCoins(): Coins {
+    return this.split(" ").fold(Coins()) { globalSum, currentCoins ->
+        val results = requireNotNull(singleCoinTypeWithValueRegex.findAll(currentCoins))
+        val sumOfCurrentCoins = results.fold(Coins()) { subSum, result ->
+            val (amount, coinType) = result.destructured
+            subSum + amount.toInt() * Coin.fromAbbreviation(coinType)
+        }
+        globalSum + sumOfCurrentCoins
+    }.normalize()
 }
-
-fun Int.toGoldCrowns(): GoldCrowns = GoldCrowns(this)
-fun Int.toSilverShillings(): SilverShillings = SilverShillings(this)
-fun Int.toBrassPennies(): BrassPennies = BrassPennies(this)

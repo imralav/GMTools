@@ -1,7 +1,6 @@
 package com.imralav.gmtools.gui.currencycalculator.calculator
 
-import com.imralav.gmtools.domain.currency.Money
-import com.imralav.gmtools.domain.currency.calculateMoney
+import com.imralav.gmtools.domain.currency.CoinsExpressionParser
 import com.imralav.gmtools.gui.configuration.logger
 import com.imralav.gmtools.gui.utils.ViewsLoader
 import javafx.fxml.FXML
@@ -33,9 +32,9 @@ class Calculator : VBox() {
 
     @FXML
     fun handleInputEntered() {
-        val money : Money = computationInput.text.calculateMoney()
+        val coins = CoinsExpressionParser(computationInput.text).parse().evaluate()
         log(computationInput.text)
-        replaceInputWithResult(money.toString())
+        replaceInputWithResult(coins.toShortenedString())
     }
 
     fun log(message: String) {

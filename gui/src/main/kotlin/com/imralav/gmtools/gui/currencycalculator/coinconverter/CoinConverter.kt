@@ -1,9 +1,6 @@
 package com.imralav.gmtools.gui.currencycalculator.coinconverter
 
-import com.imralav.gmtools.domain.currency.BrassPennies
-import com.imralav.gmtools.domain.currency.Coin
-import com.imralav.gmtools.domain.currency.GoldCrowns
-import com.imralav.gmtools.domain.currency.SilverShillings
+import com.imralav.gmtools.domain.currency.Coins
 import com.imralav.gmtools.domain.currency.toBrassPennies
 import com.imralav.gmtools.domain.currency.toGoldCrowns
 import com.imralav.gmtools.domain.currency.toSilverShillings
@@ -34,49 +31,45 @@ class CoinConverter : HBox() {
         fxmlLoader.load<Any>()
     }
 
-    fun TextField.toGoldCrowns(): GoldCrowns = try {
+    fun TextField.toGoldCrowns(): Coins = try {
         text.toInt().toGoldCrowns()
     } catch (e: Exception) {
-        GoldCrowns()
+        Coins()
     }
 
-    fun TextField.toSilverShillings(): SilverShillings = try {
+    fun TextField.toSilverShillings(): Coins = try {
         text.toInt().toSilverShillings()
     } catch (e: Exception) {
-        SilverShillings()
+        Coins()
     }
 
-    fun TextField.toBrassPennies(): BrassPennies = try {
+    fun TextField.toBrassPennies(): Coins = try {
         text.toInt().toBrassPennies()
     } catch (e: Exception) {
-        BrassPennies()
-    }
-
-    fun TextField.fromCoin(coin: Coin) {
-        text = coin.value.toString()
+        Coins()
     }
 
     @FXML
     fun updateFromGold() {
         goldCrownsTextField.toGoldCrowns().let {
-            silverShillingsTextField.fromCoin(it.toSilverShillings())
-            brassPenniesTextField.fromCoin(it.toBrassPennies())
+            silverShillingsTextField.text = it.asSilverShillings().toString()
+            brassPenniesTextField.text = it.asBrassPennies().toString()
         }
     }
 
     @FXML
     fun updateFromSilver() {
         silverShillingsTextField.toSilverShillings().let {
-            goldCrownsTextField.fromCoin(it.toGoldCrowns())
-            brassPenniesTextField.fromCoin(it.toBrassPennies())
+            goldCrownsTextField.text = it.asGoldCrowns().toString()
+            brassPenniesTextField.text = it.asBrassPennies().toString()
         }
     }
 
     @FXML
     fun updateFromBrass() {
         brassPenniesTextField.toBrassPennies().let {
-            goldCrownsTextField.fromCoin(it.toGoldCrowns())
-            silverShillingsTextField.fromCoin(it.toSilverShillings())
+            goldCrownsTextField.text = it.asGoldCrowns().toString()
+            silverShillingsTextField.text = it.asSilverShillings().toString()
         }
     }
 }
