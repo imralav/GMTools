@@ -80,9 +80,6 @@ data class Coins(val pennies: Int = 0, val shillings: Int = 0, val crowns: Int =
     operator fun times(multiplier: Double): Coins =
             Coins(pennies = (this.asBrassPennies() * multiplier).toInt()).normalize()
 
-    operator fun Double.times(coins: Coins): Coins =
-            Coins(pennies = (coins.asBrassPennies() * this).toInt()).normalize()
-
     operator fun div(divisor: Double): Coins {
         return if (divisor == 0.0) {
             Coins()
@@ -95,6 +92,9 @@ data class Coins(val pennies: Int = 0, val shillings: Int = 0, val crowns: Int =
     fun asSilverShillings(): Int = crowns * 20 + shillings + pennies / 12
     fun asBrassPennies(): Int = crowns * 240 + shillings * 12 + pennies
 }
+
+operator fun Double.times(coins: Coins): Coins =
+        Coins(pennies = (coins.asBrassPennies() * this).toInt()).normalize()
 
 fun Int.toGoldCrowns(): Coins = Coins(crowns = this)
 fun Int.toSilverShillings(): Coins = Coins(shillings = this)

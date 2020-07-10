@@ -76,7 +76,7 @@ class CoinsTest {
         @ParameterizedTest(name = "{0} should evaluate to {1}")
         @MethodSource("parametersForSumExpressions")
         fun `should parse and correctly evaluate sum`(expression: String, expectedResult: Coins) {
-            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate().normalize()
+            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate()//.normalize()
             val normalizedExpectedResult = expectedResult.normalize()
             Assertions.assertThat(evaluatedAndNormalizedExpression).isEqualTo(normalizedExpectedResult)
         }
@@ -100,7 +100,7 @@ class CoinsTest {
         @ParameterizedTest(name = "{0} should evaluate to {1}")
         @MethodSource("parametersForDifferenceExpressions")
         fun `should parse and correctly evaluate difference`(expression: String, expectedResult: Coins) {
-            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate().normalize()
+            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate()//.normalize()
             val normalizedExpectedResult = expectedResult.normalize()
             Assertions.assertThat(evaluatedAndNormalizedExpression).isEqualTo(normalizedExpectedResult)
         }
@@ -124,7 +124,7 @@ class CoinsTest {
         @ParameterizedTest(name = "{0} should evaluate to {1}")
         @MethodSource("parametersForMultiplicationExpressions")
         fun `should parse and correctly evaluate multiplication`(expression: String, expectedResult: Coins) {
-            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate().normalize()
+            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate()//.normalize()
             val normalizedExpectedResult = expectedResult.normalize()
             Assertions.assertThat(evaluatedAndNormalizedExpression).isEqualTo(normalizedExpectedResult)
         }
@@ -145,7 +145,7 @@ class CoinsTest {
         @ParameterizedTest(name = "{0} should evaluate to {1}")
         @MethodSource("parametersForDivisionExpressions")
         fun `should parse and correctly evaluate division`(expression: String, expectedResult: Coins) {
-            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate().normalize()
+            val evaluatedAndNormalizedExpression = CoinsExpressionParser(expression).parse().evaluate()//.normalize()
             val normalizedExpectedResult = expectedResult.normalize()
             Assertions.assertThat(evaluatedAndNormalizedExpression).isEqualTo(normalizedExpectedResult)
         }
