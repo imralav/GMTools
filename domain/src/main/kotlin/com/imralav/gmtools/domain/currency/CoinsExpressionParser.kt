@@ -1,61 +1,65 @@
 package com.imralav.gmtools.domain.currency
 
-import arrow.core.Option
-import arrow.core.getOrElse
-
 class CoinsExpressionParser(val expression: String) {
+    data class ParsingResult(val operands: List<CoinExpressions>, val operators: List<Char>)
+
     fun parse(): CoinExpressions {
-        val trimmedExpression = expression.trim().replace("""\s""".toRegex(), "")
-        val singleExpressionRegex = Regex("""(?<left>(?:(?:\d+|\d+.\d+)(?:ZK|s|p)?)+)(?<operation>[+\-*/])(?<right>(?:(?:\d+|\d+.\d+)(?:ZK|s|p)?)+)""")
-        val result = requireNotNull(singleExpressionRegex.matchEntire(trimmedExpression))
-        val leftOperandOption = getLeftOperand(result)
-        val rightOperandOption = getRightOperand(result)
-        val operation = getOperator(result)
-        return when (operation) {
-            "+" -> {
-                val left = leftOperandOption.getOrElse { CoinExpressions.CoinsExpr() }
-                val right = rightOperandOption.getOrElse { CoinExpressions.CoinsExpr() }
-                left + right
+        var trimmedExpression = expression.removeWhitespace()
+        while(trimmedExpression.contains("""[()]""".toRegex())) {
+            val allSubexpressions = """\((?<expression>[.\d\w+\-*/]+)\)""".toRegex().findAll(trimmedExpression)
+            allSubexpressions.forEach {
+                val subexpression = it.groups["expression"]?.value ?: ""
+                val parsedSubexpression = parseSingleExpression(subexpression).evaluate()
+                trimmedExpression = trimmedExpression.replaceFirst("($subexpression)", parsedSubexpression.toString()).removeWhitespace()
             }
-            "-" -> {
-                val left = leftOperandOption.getOrElse { CoinExpressions.CoinsExpr() }
-                val right = rightOperandOption.getOrElse { CoinExpressions.CoinsExpr() }
-                left - right
-            }
-            "*" -> {
-                val left = leftOperandOption.getOrElse { CoinExpressions.CoinsExpr() }
-                val right = rightOperandOption.getOrElse { CoinExpressions.ConstExpr() }
-                left * right
-            }
-            "/" -> {
-                val left = leftOperandOption.getOrElse { CoinExpressions.CoinsExpr() }
-                val right = rightOperandOption.getOrElse { CoinExpressions.ConstExpr() }
-                left / right
-            }
-            else -> CoinExpressions.CoinsExpr(Coins())
+        }
+        return parseSingleExpression(trimmedExpression)
+    }
+
+    private fun parseSingleExpression(expression: String): CoinExpressions {
+        val operands = expression.split("""[+\-*/]""".toRegex()).map(::getOperand).toList()
+        val operators = expression.replace("""[^+\-*/]""".toRegex(), "").toList()
+        return parseForOperator(parseForOperator(operands, operators, '*', '/'), '+', '-').operands.first()
+    }
+
+    private fun getOperand(value: String): CoinExpressions {
+        val doubleValue = value.toDoubleOrNull()
+        return if (doubleValue == null) {
+            CoinExpressions.CoinsExpr(value.toCoins())
+        } else {
+            CoinExpressions.ConstExpr(doubleValue)
         }
     }
 
-    private fun getOperator(result: MatchResult) =
-            Option.fromNullable(result.groups["operation"]).map { it.value }.getOrElse { "+" }
-
-    private fun getRightOperand(result: MatchResult): Option<CoinExpressions> {
-        return getOperand(result, "right")
-    }
-
-    private fun getLeftOperand(result: MatchResult): Option<CoinExpressions> {
-        return getOperand(result, "left")
-    }
-
-    private fun getOperand(result: MatchResult, side: String): Option<CoinExpressions> {
-        return Option.fromNullable(result.groups[side]).map {
-            val value = it.value
-            val doubleValue = value.toDoubleOrNull()
-            if (doubleValue == null) {
-                CoinExpressions.CoinsExpr(it.value.toCoins())
-            } else {
-                CoinExpressions.ConstExpr(doubleValue)
+    private fun parseForOperator(operands: List<CoinExpressions>, operators: List<Char>, vararg selectedOperators: Char): ParsingResult {
+        require(operands.size == operators.size + 1) { "There should be one more operand than there are operators" }
+        val mutableOperands = operands.toMutableList()
+        val mutableOperators = operators.toMutableList()
+        var offset = 0
+        var operatorsConsumed = 0
+        while (offset < operators.size) {
+            val currentOperator = mutableOperators[offset - operatorsConsumed]
+            if (currentOperator in selectedOperators) {
+                val leftOperand = mutableOperands[offset - operatorsConsumed]
+                val rightOperand = mutableOperands[offset + 1 - operatorsConsumed]
+                mutableOperands.removeAt(offset - operatorsConsumed)
+                mutableOperators.removeAt(offset - operatorsConsumed)
+                when (currentOperator) {
+                    '+' -> mutableOperands[offset - operatorsConsumed] = leftOperand + rightOperand
+                    '-' -> mutableOperands[offset - operatorsConsumed] = leftOperand - rightOperand
+                    '*' -> mutableOperands[offset - operatorsConsumed] = leftOperand * rightOperand
+                    '/' -> mutableOperands[offset - operatorsConsumed] = leftOperand / rightOperand
+                }
+                operatorsConsumed++
             }
+            offset++
         }
+        return ParsingResult(mutableOperands, mutableOperators)
+    }
+
+    private fun parseForOperator(previousResult: ParsingResult, vararg selectedOperators: Char): ParsingResult {
+        return parseForOperator(previousResult.operands, previousResult.operators, *selectedOperators)
     }
 }
+
+fun String.removeWhitespace() = this.trim().replace("""\s""".toRegex(), "")

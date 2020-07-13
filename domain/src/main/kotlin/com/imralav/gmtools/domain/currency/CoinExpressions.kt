@@ -3,9 +3,13 @@ package com.imralav.gmtools.domain.currency
 sealed class CoinExpressionResult {
     data class CoinsValue(val value: Coins = Coins()) : CoinExpressionResult() {
         constructor(pennies: Int = 0, shillings: Int = 0, crowns: Int = 0) : this(Coins(pennies, shillings, crowns))
+
+        override fun toString(): String = value.toString()
     }
 
-    data class ConstValue(val value: Double = 0.0) : CoinExpressionResult()
+    data class ConstValue(val value: Double = 0.0) : CoinExpressionResult() {
+        override fun toString(): String = value.toString()
+    }
     data class InvalidExpression(val reason: String) : CoinExpressionResult()
 }
 
@@ -14,10 +18,14 @@ sealed class CoinExpressions {
 
     data class CoinsExpr(val value: Coins = Coins()) : CoinExpressions() {
         override fun evaluate(): CoinExpressionResult = CoinExpressionResult.CoinsValue(value)
+
+        override fun toString(): String = value.toString()
     }
 
     data class ConstExpr(val value: Double = 0.0) : CoinExpressions() {
         override fun evaluate(): CoinExpressionResult = CoinExpressionResult.ConstValue(value)
+
+        override fun toString(): String = value.toString()
     }
 
     data class Sum(val left: CoinExpressions, val right: CoinExpressions) : CoinExpressions() {
@@ -32,6 +40,8 @@ sealed class CoinExpressions {
                 CoinExpressionResult.InvalidExpression("You can only sum coins with coins or constants with constants")
             }
         }
+
+        override fun toString(): String = "$left+$right"
     }
 
     data class Difference(val left: CoinExpressions, val right: CoinExpressions) : CoinExpressions() {
@@ -46,6 +56,8 @@ sealed class CoinExpressions {
                 CoinExpressionResult.InvalidExpression("You can only subtract coins from coins or constants from constants")
             }
         }
+
+        override fun toString(): String = "$left-$right"
     }
 
     data class Product(val left: CoinExpressions, val right: CoinExpressions) : CoinExpressions() {
@@ -62,6 +74,8 @@ sealed class CoinExpressions {
                 CoinExpressionResult.InvalidExpression("You can only multiply constants and constants with coins")
             }
         }
+
+        override fun toString(): String = "$left*$right"
     }
 
     data class Quotient(val left: CoinExpressions, val right: CoinExpressions) : CoinExpressions() {
@@ -83,6 +97,8 @@ sealed class CoinExpressions {
                 }
             }
         }
+
+        override fun toString(): String = "$left/$right"
     }
 }
 

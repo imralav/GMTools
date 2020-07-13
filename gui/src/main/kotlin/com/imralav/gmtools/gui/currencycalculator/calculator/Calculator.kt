@@ -1,5 +1,6 @@
 package com.imralav.gmtools.gui.currencycalculator.calculator
 
+import com.imralav.gmtools.domain.currency.CoinExpressionResult
 import com.imralav.gmtools.domain.currency.CoinsExpressionParser
 import com.imralav.gmtools.gui.configuration.logger
 import com.imralav.gmtools.gui.utils.ViewsLoader
@@ -34,7 +35,11 @@ class Calculator : VBox() {
     fun handleInputEntered() {
         val coins = CoinsExpressionParser(computationInput.text).parse().evaluate()
         log(computationInput.text)
-        replaceInputWithResult(coins.toShortenedString())
+        when(coins) {
+            is CoinExpressionResult.CoinsValue -> replaceInputWithResult(coins.value.toShortenedString())
+            is CoinExpressionResult.ConstValue -> replaceInputWithResult(coins.value.toString())
+            is CoinExpressionResult.InvalidExpression -> replaceInputWithResult(coins.reason)
+        }
     }
 
     fun log(message: String) {

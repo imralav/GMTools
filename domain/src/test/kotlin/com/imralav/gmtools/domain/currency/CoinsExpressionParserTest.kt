@@ -18,7 +18,6 @@ class CoinsExpressionParserTest {
 
         private fun parametersForSumExpressions(): Stream<Arguments> {
             return Stream.of(
-                    Arguments.of("1p+1p", Coins(pennies = 2)),
                     Arguments.of("0p+1p", Coins(pennies = 1)),
                     Arguments.of("0s+1p", Coins(pennies = 1)),
                     Arguments.of("1s+1p", Coins(shillings = 1, pennies = 1)),
@@ -28,7 +27,8 @@ class CoinsExpressionParserTest {
                     Arguments.of("1s 1p + 1p", Coins(shillings = 1, pennies = 2)),
                     Arguments.of("  1s   1p   +   1ZK   1p  ", Coins(crowns = 1, shillings = 1, pennies = 2)),
                     Arguments.of("1s1p+1ZK1p", Coins(crowns = 1, shillings = 1, pennies = 2)),
-                    Arguments.of("13p + 13p", Coins(shillings = 2, pennies = 2))
+                    Arguments.of("13p + 13p", Coins(shillings = 2, pennies = 2)),
+                    Arguments.of("1p+1p+1p", Coins(pennies = 3))
             )
         }
 
@@ -92,6 +92,32 @@ class CoinsExpressionParserTest {
                     Arguments.of("    2p    /    2    ", Coins(pennies = 1)),
                     Arguments.of("2s/4", Coins(pennies = 6)),
                     Arguments.of("1ZK/3", Coins(shillings = 6, pennies = 8))
+            )
+        }
+
+        @ParameterizedTest(name = "{0} should evaluate to {1}")
+        @MethodSource("parametersForComplexExpressions")
+        fun `should parse and correctly evaluate complex expressions`(expression: String, expectedResult: Coins) {
+            evaluateAndCheck(expression, expectedResult)
+        }
+
+        private fun parametersForComplexExpressions(): Stream<Arguments> {
+            return Stream.of(
+                    Arguments.of("1p * 2 + 1p", Coins(pennies = 3)),
+                    Arguments.of("1p + 1p * 2", Coins(pennies = 3)),
+                    Arguments.of("0.5 * 10p / 5 + 1p * 2", Coins(pennies = 3)),
+                    Arguments.of("1ZK+2ZK-2ZK", Coins(crowns = 1)),
+                    Arguments.of("0ZK 10s 6p * 2 + 2 * 0ZK 10s 6p", Coins(crowns = 2, shillings = 2)),
+                    Arguments.of("(1p+1p)", Coins(pennies = 2)),
+                    Arguments.of("(2*1p)", Coins(pennies = 2)),
+                    Arguments.of("(2)*(1p)", Coins(pennies = 2)),
+                    Arguments.of("(2+2)*(1p+1p)", Coins(pennies = 8)),
+                    Arguments.of("(2-2+1)/(3-2+0)*(2p/2*2)", Coins(pennies = 2)),
+                    Arguments.of("((2)*(1p))", Coins(pennies = 2)),
+                    Arguments.of("((2.0*1p)+(1p*2.0))", Coins(pennies = 4)),
+                    Arguments.of("2.0*1p+1p*2.0", Coins(pennies = 4)),
+                    Arguments.of("2.0*(1p+1p)*2.0", Coins(pennies = 8)),
+                    Arguments.of("(2.0*(1p+1p))*2.0", Coins(pennies = 8))
             )
         }
     }
