@@ -58,7 +58,7 @@ class BuffsTrackerView : VBox(), Initializable {
         }
     }
 
-    fun setUnit(unit: BattleTrackerUnit) {
+    fun setUnit(unit: BattleTrackerUnit?) {
         this.unit.value = unit
     }
 
