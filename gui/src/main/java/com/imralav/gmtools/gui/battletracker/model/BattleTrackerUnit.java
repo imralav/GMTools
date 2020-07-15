@@ -11,7 +11,7 @@ public class BattleTrackerUnit {
     private IntegerProperty advantagePoints = new SimpleIntegerProperty(this, "advantagePoints");
     private BooleanProperty selected = new SimpleBooleanProperty(this, "selected", false);
     @Getter
-    private ObservableList<Buff> buffs = FXCollections.observableArrayList();
+    public ObservableList<Buff> buffs = FXCollections.observableArrayList();
 
     public BattleTrackerUnit(String name, Integer healthPoints) {
         this.name.setValue(name);
